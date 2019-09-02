@@ -51,6 +51,8 @@ plainwhite:
 theme: plainwhite
 
 remote_theme: thelehhman/plainwhite-jekyll
+url: "https://nonetype.github.io"
+baseurl: ""
 
 plugins:
   - jekyll-seo-tag
