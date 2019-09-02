@@ -1,6 +1,15 @@
-#btrfs_mount function Analysis
+# btrfs_mount function Analysis
 
 >본 문서는 LKL(Linux Kernel Library)의 Linux Kernel의 syscall 선언과 동작 방식을 분석합니다. 세부적인 내용은  github.com/torvalds/linux 와 다를 수 있습니다.
+
+<!--
+#User application에서 sys_mount syscall이 호출되었을 때 Flows
+1. sys_mount가 호출 된 프로세스(User App-)이 sys_mount의 호출 권한이 있는가?
+	호출 권한이 있다면(추가적인 검사도 있긴 함) do_mount 함수 호출
+2. do_mount 함수 내에서 인자로 받아온 flag를 체크 후 각 flag에 따른 mount를 실행(MS_REMOUNT, MS_MOVE 등의 플래그가 존재 / 해당 플래그에 맞는 mount 함수 호출)
+3. do_new_mount 함수의 경우 File system type을 체크(register된 파일 시스템 중 입력한 파일 시스템 타입에 맞는 구조체 주소를 반환)한 후, vfs_kern_mount 함수 호출
+4. Vfs_kern_mount 함수 내에서는 file_system_type 구조체 내에 존재하는 파일 시스템 모듈별 초기화 함수 포인터를 호출하여 파일 시스템 모듈별로 다른 마운트 동작을 실행.
+-->
 
 sys_mount syscall부터 VFS를 타고 드디어. 마침내. btrfs 드라이버가 마운트 되는 과정까지 왔다.
 이 문서에서는 btrfs 파일 시스템이 어떻게 커널에 마운트되는지 확인해 보자!
@@ -482,7 +491,7 @@ struct btrfs_fs_info {
 
 
 ***
-####참고
+#### 참고
 소스 파일별 용도
 ```
 ctree.c: 	Core btree manipulation code
@@ -508,7 +517,7 @@ compression.c: 	zlib compression support routines
 ```
 
 
-####References-
+#### References-
 https://btrfs.wiki.kernel.org/index.php/Code_documentation
 https://www.potatogim.net/wiki/Btrfs/%EC%BB%A4%EB%84%90_%EC%BD%94%EB%93%9C_%EB%B6%84%EC%84%9D
 https://libsora.so/posts/system-programming-linux-file-system/
