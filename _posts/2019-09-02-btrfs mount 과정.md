@@ -1,3 +1,8 @@
+---
+title: "btrfs FileSystem mount analysis"
+categories: linux kernel analysis btrfs
+---
+
 btrfs 드라이버 내 mount 함수 분석기
 
 >본 문서는 LKL(Linux Kernel Library)의 Linux Kernel의 syscall 선언과 동작 방식을 분석합니다. 세부적인 내용은  github.com/torvalds/linux 와 다를 수 있습니다.

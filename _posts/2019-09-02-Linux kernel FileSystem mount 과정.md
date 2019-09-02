@@ -1,3 +1,8 @@
+---
+title: "Linux Kernel sys_mount analysis"
+categories: linux kernel analysis
+---
+
 sys_mount 분석기
 
 #### 1. VFS(Virtual File System)
