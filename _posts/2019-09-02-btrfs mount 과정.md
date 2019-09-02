@@ -95,7 +95,6 @@ out:
 	return root;
 }
 ```
-<!--** for atom highlight bug-->
 우선 주석을 확인해 보면,
 > 1. 나중에 mount_subvol() 함수에서 사용하기 위해 subvol id와 관련있는 옵션을 파싱한다.
 > 2. vfs_kern_mount() 를 통해 디바이스의 루트(/)를 마운트 한다.
@@ -225,7 +224,6 @@ error_sec_opts:
 	return ERR_PTR(error);
 }
 ```
-<!--** for atom highlight bug-->
 `btrfs_parse_early_options()`는 함수 declaration 위치에 주석으로 `"마운트 작업 초기에 필요한 마운트 옵션을 가져온다. 다른 옵션들은 마운트 작업 이후나 필요할 때에 SuperBlock에 할당될 것이다."`라고 되어있다.
 
 이후 `sget(fs_type, btrfs_test_super, btrfs_set_super, flags | SB_NOSEC,
@@ -485,7 +483,7 @@ struct btrfs_fs_info {
 1. `mount_fs()`: 파일 시스템 드라이버(모듈)별 Mount 함수 호출 (btrfs, ext4 등등)
 2. `btrfs_mount()`: 서브볼륨 id/name 파싱, `vfs_kern_mount(vtrfs_mount_root)` 호출, 서브볼륨 dentry 로드
 3. `vfs_kern_mount()`: btrfs_mount_root 호출
-4. `btrfs_mount_root()`: 당장 필요한 옵션만 파싱, 더미 루트/fs_info 구조체 할당, device 체크, readOnly 체크 후 `btrfs_fill_super()` 호출
+4. `btrfs_mount_root()`: 당장 필요한 옵션만 파싱(Frame Build), 더미 root, 더미 fs_info 구조체 할당, device 체크, readOnly 체크 후 `btrfs_fill_super()` 호출
 5. `btrfs_fill_super()`: SuperBlock 내 값을 채우고, INode를 받아와 SuperBlock의 Root INode로 지정
 6. `open_ctree()`: fs_info 구조체 내 필드 값 할당
 
