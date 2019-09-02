@@ -1,4 +1,5 @@
-# 리눅스 커널 마운트 과정
+sys_mount 분석기
+
 #### 1. VFS(Virtual File System)
   VFS는 User Mode 프로세스에 동일한 인터페이스를 제공하고, 다양한 파일 시스템을 효과적으로 구현하기 위한 '표준 유닉스 파일시스템과 관련된 모든 System Call을 수행하는 Kernel Layer'이다.
 
