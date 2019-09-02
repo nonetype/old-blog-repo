@@ -1,9 +1,9 @@
-title: AttributeError: 'NoneType'
+title: AttributeError:NoneType
 author: nonetype
 email: agilemee@gmail.com
 description: > # this means to ignore newlines until "show_exerpts:"
   learning hacking in south korea, BoB(aka. Best of the Best) 8th mentee
-  interested in pwnable, posts 'system analysis diary', '1-day analysis', etc..
+  interested in pwnable, posts *system analysis diary*, *1-day analysis*, etc..
 show_excerpts: true # set to true to show excerpts on the homepage
 
 # Minima date format
@@ -19,7 +19,7 @@ plainwhite:
   # generate social links in footer
   social_links:
     twitter: nonetype-pwn
-    github:  nonetype
+    github: nonetype
     # linkedIn: in/thelehhman
     rss: rss
     # dribbble: jekyll
