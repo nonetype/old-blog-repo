@@ -264,6 +264,7 @@ vfs_kern_mount(struct file_system_type *type, int flags, const char *name, void 
 그리고 `vfs_kern_mount()` 함수에서 `mount_fs()` 함수를 호출한다.
 
 ```c {.line-numbers}
+
 struct dentry *
 mount_fs(struct file_system_type *type, int flags, const char *name, void *data)
 {
