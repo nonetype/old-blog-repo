@@ -263,7 +263,7 @@ vfs_kern_mount(struct file_system_type *type, int flags, const char *name, void 
 
 그리고 `vfs_kern_mount()` 함수에서 `mount_fs()` 함수를 호출한다.
 
-```c {.line-numbers}
+```c
 
 struct dentry *
 mount_fs(struct file_system_type *type, int flags, const char *name, void *data)
@@ -326,7 +326,7 @@ out:
 	return ERR_PTR(error);
 }
 ```
-`mount_fs()`에서는 19L의 `type->mount()`를 통해 각 파일 시스템 드라이버에 선언되어있는 함수 포인터를 호출함으로써 각 드라이버별 마운트 과정을 시작한다.
+`mount_fs()`에서는 `type->mount()`를 통해 각 파일 시스템 드라이버에 선언되어있는 함수 포인터를 호출함으로써 각 드라이버별 마운트 과정을 시작한다.
 
 ***
 #### 기타 정보
