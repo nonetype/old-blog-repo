@@ -17,6 +17,8 @@ sys_mount 분석기
 
 ![vfs_structure](https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/IO_stack_of_the_Linux_kernel.svg/440px-IO_stack_of_the_Linux_kernel.svg.png)
 
+
+#### 2. sys_mount() 분석
 커널에서 sys_mount syscall이 호출될 경우, `fs/namespace.c`의 `int ksys_mount` 함수가 호출된다.
 
 ```c
@@ -163,7 +165,46 @@ dput_out:
 }
 ```
 
-파일 시스템의 타입을 구해오기 위해 get_fs_type 함수가 존재한다.
+```c
+/*
+ * create a new mount for userspace and request it to be added into the
+ * namespace's tree
+ */
+static int do_new_mount(struct path *path, const char *fstype, int sb_flags,
+			int mnt_flags, const char *name, void *data)
+{
+	struct file_system_type *type;
+	struct vfsmount *mnt;
+	int err;
+
+	if (!fstype)
+		return -EINVAL;
+
+	type = get_fs_type(fstype);
+	if (!type)
+		return -ENODEV;
+
+	mnt = vfs_kern_mount(type, sb_flags, name, data);
+	if (!IS_ERR(mnt) && (type->fs_flags & FS_HAS_SUBTYPE) &&
+	    !mnt->mnt_sb->s_subtype)
+		mnt = fs_set_subtype(mnt, fstype);
+
+	put_filesystem(type);
+	if (IS_ERR(mnt))
+		return PTR_ERR(mnt);
+
+	if (mount_too_revealing(mnt, &mnt_flags)) {
+		mntput(mnt);
+		return -EPERM;
+	}
+
+	err = do_add_mount(real_mount(mnt), path, mnt_flags);
+	if (err)
+		mntput(mnt);
+	return err;
+}
+```
+do mount 함수에서는 `get_fs_type()` 함수를 통해 파일 시스템의 타입을 구해온 후, 파일 시스템 타입에 맞는 드라이버 모듈의 mount 함수를 호출하기 위해 `vfs_kern_mount()` 함수를 호출한다.
 ```c
 struct file_system_type *get_fs_type(const char *name)
 {
@@ -184,6 +225,110 @@ struct file_system_type *get_fs_type(const char *name)
         return fs;
 }
 ```
+
+```c
+struct vfsmount *
+vfs_kern_mount(struct file_system_type *type, int flags, const char *name, void *data)
+{
+	struct mount *mnt;
+	struct dentry *root;
+
+	if (!type)
+		return ERR_PTR(-ENODEV);
+
+	mnt = alloc_vfsmnt(name);
+	if (!mnt)
+		return ERR_PTR(-ENOMEM);
+
+	if (flags & SB_KERNMOUNT)
+		mnt->mnt.mnt_flags = MNT_INTERNAL;
+
+	root = mount_fs(type, flags, name, data);
+	if (IS_ERR(root)) {
+		mnt_free_id(mnt);
+		free_vfsmnt(mnt);
+		return ERR_CAST(root);
+	}
+
+	mnt->mnt.mnt_root = root;
+	mnt->mnt.mnt_sb = root->d_sb;
+	mnt->mnt_mountpoint = mnt->mnt.mnt_root;
+	mnt->mnt_parent = mnt;
+	lock_mount_hash();
+	list_add_tail(&mnt->mnt_instance, &root->d_sb->s_mounts);
+	unlock_mount_hash();
+	return &mnt->mnt;
+}
+```
+
+그리고 `vfs_kern_mount()` 함수에서 `mount_fs()` 함수를 호출한다.
+
+```c {.line-numbers}
+struct dentry *
+mount_fs(struct file_system_type *type, int flags, const char *name, void *data)
+{
+	struct dentry *root;
+	struct super_block *sb;
+	char *secdata = NULL;
+	int error = -ENOMEM;
+
+	if (data && !(type->fs_flags & FS_BINARY_MOUNTDATA)) {
+		secdata = alloc_secdata();
+		if (!secdata)
+			goto out;
+
+		error = security_sb_copy_data(data, secdata);
+		if (error)
+			goto out_free_secdata;
+	}
+
+	root = type->mount(type, flags, name, data);
+	if (IS_ERR(root)) {
+		error = PTR_ERR(root);
+		goto out_free_secdata;
+	}
+	sb = root->d_sb;
+	BUG_ON(!sb);
+	WARN_ON(!sb->s_bdi);
+
+	/*
+	 * Write barrier is for super_cache_count(). We place it before setting
+	 * SB_BORN as the data dependency between the two functions is the
+	 * superblock structure contents that we just set up, not the SB_BORN
+	 * flag.
+	 */
+	smp_wmb();
+	sb->s_flags |= SB_BORN;
+
+	error = security_sb_kern_mount(sb, flags, secdata);
+	if (error)
+		goto out_sb;
+
+	/*
+	 * filesystems should never set s_maxbytes larger than MAX_LFS_FILESIZE
+	 * but s_maxbytes was an unsigned long long for many releases. Throw
+	 * this warning for a little while to try and catch filesystems that
+	 * violate this rule.
+	 */
+	WARN((sb->s_maxbytes < 0), "%s set sb->s_maxbytes to "
+		"negative value (%lld)\n", type->name, sb->s_maxbytes);
+
+	up_write(&sb->s_umount);
+	free_secdata(secdata);
+	return root;
+out_sb:
+	dput(root);
+	deactivate_locked_super(sb);
+out_free_secdata:
+	free_secdata(secdata);
+out:
+	return ERR_PTR(error);
+}
+```
+`mount_fs()`에서는 19L의 `type->mount()`를 통해 각 파일 시스템 드라이버에 선언되어있는 함수 포인터를 호출함으로써 각 드라이버별 마운트 과정을 시작한다.
+
+***
+#### 기타 정보
 
 get_sb(get SuperBlock) 함수
 ```c
@@ -415,7 +560,9 @@ static void __exit exit_btrfs_fs(void)
 }
 ```
 
-ref.
+***
+#### References.
+
 https://en.wikipedia.org/wiki/Virtual_file_system
 https://www.win.tue.nl/~aeb/linux/lk/lk-8.html
 https://dri.freedesktop.org/docs/drm/filesystems/index.html
