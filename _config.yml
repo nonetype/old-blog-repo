@@ -49,7 +49,7 @@ header_pages:
 theme: plainwhite
 
 remote_theme: thelehhman/plainwhite-jekyll
-url: "https://nonetype.github.io"
+url: https://nonetype.github.io
 baseurl: ""
 
 plugins:
