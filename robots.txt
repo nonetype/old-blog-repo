@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: http://nonetype.github.io/sitemap.xml
