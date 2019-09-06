@@ -49,7 +49,6 @@ header_pages:
 # Build settings
 theme: jekyll-theme-minimal
 
-remote_theme: jekyll-theme-minimal
 url: https://nonetype.github.io
 baseurl: ""
 
