@@ -12,7 +12,7 @@ also trying to solve CTF-Problems
 
 ## Career
 - Best of the Best (A.K.A BoB) 8th Mentee
-- GeekPwn 2018 - Router Exploit(Netgear)
+- GeekPwn 2018 - Router Exploit(DLink, Netgear, Tenda)
 
 ## Contact
 - Email: agilemee@gmail.com
