@@ -1,3 +1,9 @@
+---
+layout: post
+title: "Linux Kernel debugging with Qemu"
+author: "nonetype"
+---
+
 리눅스 커널 디버깅!
 
 #### Linux Kernel Build
@@ -25,7 +31,11 @@ https://mirrors.edge.kernel.org/pub/linux/kernel/v4.x/ 에서 원하는 버전�
 
 #### References
 https://tistory.0wn.kr/368
+
 https://woodz.tistory.com/72
+
 https://willow72.tistory.com/entry/qemu-gdb-%EC%97%B0%EB%8F%99
+
 https://blog.naver.com/ultract2/221230988537
+
 https://satanel001.tistory.com/183

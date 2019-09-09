@@ -1,6 +1,7 @@
 ---
+layout: post
 title: "btrfs FileSystem mount analysis"
-categories: linux kernel analysis btrfs
+author: "nonetype"
 ---
 
 btrfs 드라이버 내 mount 함수 분석기
