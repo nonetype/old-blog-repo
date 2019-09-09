@@ -47,8 +47,19 @@ vmlinux-4.15.0-45-generic
 debug@debug-virtual-machine:~$
 ```
 
-이 파일을 호스트(debugger를 실행할)로 옮겨주고, GDB를 또 컴파일하긴 귀찮으니 IDA로 깐다.
+이 파일을 호스트(debugger를 실행할)로 옮겨준다.
 
+## Stage 3 - remote attach
+
+GDB를 또 컴파일하긴 귀찮으니 IDA로 guestOS에서 옮긴 vmlinux 파일을 깐다.
+
+긴 인내의 시간 후, IDA가 vmlinux 바이너리를 열고 symbol load가 끝나면, 일단 다시 로드하지 않도록 database save를 한번 해주자.
+
+이후 `Debugger - Select Debugger - Remote GDB debugger` 선택, `Debugger - Process options`로 들어간다.
+Hostname 필드는 `localhost`, Port는 `32bit- 8832, 64bit- 8864`(VMware debugging service port)로 설정해준다.
+
+
+설정이 끝났으면 `Debugger - Attach to Process`를 클릭해 Remote attach한 후 디버깅을 시작한다!
 
 
 
