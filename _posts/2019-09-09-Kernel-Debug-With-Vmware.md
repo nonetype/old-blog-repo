@@ -102,7 +102,7 @@ GRUB_CMDLINE_LINUX=""
 #GRUB_INIT_TUNE="480 440 1"
 ```
 
-
+설정 저장 후 `sudo update-grub` 필수!!!
 
 
 ## Stage 3 - remote attach
@@ -122,6 +122,9 @@ Hostname 필드는 `localhost`, Port는 `32bit- 8832, 64bit- 8864`(VMware debugg
 간단한 예를 들면, IDA에서 functions window로 확인한 `vfs_kern_mount()`의 주소는 `0xffffffff8129D7F0`이었는데, 실제 guestOS에서 `cat /proc/kallsyms | grep vfs_kern_mount`로 확인한 주소값은 `0xffffffffaea9d7f0`이었다.
 
 이전에 IDA의 심볼 주소만 믿고 BP를 걸었다가 안되서 의문이었는데, 일단 BP는 잡히지만 왜 실제 주소가 다른지는 잘 모르겠다. 더 찾아볼 예정!!
+
+**2019-09-10 추가**
+위에서 심볼 주소가 안맞았던 이유가 GRUB 설정으로 nokaslr 옵션을 추가하고 `sudo update-grub` 명령을 입력해주지 않아서였다. 필수적으로 입력해주자!!
 
 ![result](/assets/result.PNG)
 
