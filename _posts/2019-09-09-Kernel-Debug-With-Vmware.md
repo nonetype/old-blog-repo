@@ -128,7 +128,11 @@ Hostname 필드는 `localhost`, Port는 `32bit- 8832, 64bit- 8864`(VMware debugg
 
 ## References
 http://jidanhunter.blogspot.com/2015/01/linux-kernel-debugging-with-vmware-and.html
+
 https://wiki.ubuntu.com/Debug%20Symbol%20Packages
+
 http://www.alexlambert.com/2017/12/18/kernel-debugging-for-newbies.html
+
 https://www.lazenca.net/display/TEC/02.Debugging+kernel+and+modules
+
 https://dorgamza.tistory.com/1

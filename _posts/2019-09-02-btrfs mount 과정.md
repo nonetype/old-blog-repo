@@ -523,9 +523,15 @@ compression.c: 	zlib compression support routines
 
 #### References-
 https://btrfs.wiki.kernel.org/index.php/Code_documentation
+
 https://www.potatogim.net/wiki/Btrfs/%EC%BB%A4%EB%84%90_%EC%BD%94%EB%93%9C_%EB%B6%84%EC%84%9D
+
 https://libsora.so/posts/system-programming-linux-file-system/
+
 https://dri.freedesktop.org/docs/drm/filesystems/vfs.html
+
 https://jiming.tistory.com/359
+
 https://www.quora.com/What-happens-inside-Linux-Kernel-when-you-call-mount-command
+
 https://kukuruku.co/post/writing-a-file-system-in-linux-kernel/
