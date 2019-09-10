@@ -4,29 +4,7 @@ title: "Linux Kernel debugging with Vmware"
 author: "nonetype"
 ---
 
-## Stage 1 - vmx configure
-
-Debugging 할 VM(이하 guestOS)의 경로로 이동해서 .vmx 파일의 마지막 줄에 다음 라인을 추가한다.
-
-**X32**
-```sh
-debugStub.listen.guest32 = "TRUE"
-debugStub.listen.guest32.remote = "TRUE"
-debugStub.hideBreakpoints = "FALSE"
-monitor.debugOnStartGuest32 = "TRUE"
-```
-
-**X64**
-```sh
-debugStub.listen.guest64 = "TRUE"
-debugStub.listen.guest64.remote = "TRUE"
-debugStub.hideBreakpoints = "FALSE"
-monitor.debugOnStartGuest64 = "TRUE"
-```
-
-.vmx 파일 저장 후 guest OS를 부팅한다.
-
-## Stage 2 - guest OS Setting
+## Stage 1 - guestOS Setting
 
 ### Debug symbol download
 `sudo apt-get update && sudo apt-get upgrade` 명령을 통해 패키지 업그레이드를 진행한다.
@@ -103,6 +81,28 @@ GRUB_CMDLINE_LINUX=""
 ```
 
 설정 저장 후 `sudo update-grub` 필수!!!
+
+## Stage 2 - vmx configure
+
+guestOS의 VM file 경로로 이동해서 .vmx 파일의 마지막 줄에 다음 라인을 추가한다.
+
+**X32**
+```sh
+debugStub.listen.guest32 = "TRUE"
+debugStub.listen.guest32.remote = "TRUE"
+debugStub.hideBreakpoints = "FALSE"
+monitor.debugOnStartGuest32 = "TRUE"
+```
+
+**X64**
+```sh
+debugStub.listen.guest64 = "TRUE"
+debugStub.listen.guest64.remote = "TRUE"
+debugStub.hideBreakpoints = "FALSE"
+monitor.debugOnStartGuest64 = "TRUE"
+```
+
+.vmx 파일 저장 후 guest OS를 부팅한다.
 
 
 ## Stage 3 - remote attach
