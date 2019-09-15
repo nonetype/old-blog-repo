@@ -235,7 +235,7 @@ error_sec_opts:
 이후 `sget(fs_type, btrfs_test_super, btrfs_set_super, flags | SB_NOSEC,
 		 fs_info);`를 통해 superblock을 가져오게 되고, `btrfs_fill_super(s, fs_devices, data);`를 호출하게 된다.
 
-```c {.line-numbers}
+```c { .line-numbers }
 static int btrfs_fill_super(struct super_block *sb,
 			    struct btrfs_fs_devices *fs_devices,
 			    void *data)
@@ -294,11 +294,13 @@ fail_close:
 	return err;
 }
 ```
+
+
 `include/uapi/linux/magic.h:26:#define BTRFS_SUPER_MAGIC	0x9123683E`
 
 btrfs_fill_super에서는 superblock 내부의 값과 플래그를 넣어주고, `disk-io.c` 파일에 존재하는 `open_ctree()` 함수를 호출한다.
 
-```c {.line-numbers}
+```c { .line-numbers }
 int open_ctree(struct super_block *sb,
 	       struct btrfs_fs_devices *fs_devices,
 	       char *options)
