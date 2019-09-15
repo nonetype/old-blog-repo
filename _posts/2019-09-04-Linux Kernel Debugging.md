@@ -4,7 +4,11 @@ title: "Linux Kernel debugging with Qemu"
 author: "nonetype"
 ---
 
+
+
 리눅스 커널 디버깅!
+
+
 
 #### Linux Kernel Build
 https://mirrors.edge.kernel.org/pub/linux/kernel/v4.x/ 에서 원하는 버전의 커널을 다운로드 받고, 압축 해제한다.

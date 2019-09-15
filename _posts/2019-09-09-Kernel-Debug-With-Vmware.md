@@ -4,6 +4,10 @@ title: "Linux Kernel debugging with Vmware"
 author: "nonetype"
 ---
 
+
+VMware를 이용해 리눅스 커널 디버깅을 해보자
+
+
 ## Stage 1 - guestOS Setting
 
 ### Debug symbol download
