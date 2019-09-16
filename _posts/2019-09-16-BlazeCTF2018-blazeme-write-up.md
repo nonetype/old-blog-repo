@@ -529,13 +529,15 @@ lib         media       root        sys
 $ ./solve
 $ id
 uid=0(root) gid=0(root)
-$ 
+$
 ```
 
 
 # 5.References
 [blazeme write-up] <https://devcraft.io/2018/04/25/blazeme-blaze-ctf-2018.html>
+
 [kernel exploit(wikicon 발표자료)] <https://duasynt.com/slides/smep_bypass.pdf>
+
 [인라인 어셈블리 기초] <https://wiki.kldp.org/KoreanDoc/html/EmbeddedKernel-KLDP/app3.basic.html>
 
 
