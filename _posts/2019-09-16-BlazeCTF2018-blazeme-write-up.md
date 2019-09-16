@@ -519,6 +519,20 @@ int main() {
 }
 ```
 
+## Result
+```sh
+$ ls
+bin         lib64       mnt         run         tmp
+dev         linuxrc     opt         sbin        usr
+etc         lost+found  proc        solve       var
+lib         media       root        sys
+$ ./solve
+$ id
+uid=0(root) gid=0(root)
+$ 
+```
+
+
 # 5.References
 [blazeme write-up] <https://devcraft.io/2018/04/25/blazeme-blaze-ctf-2018.html>
 [kernel exploit(wikicon 발표자료)] <https://duasynt.com/slides/smep_bypass.pdf>
