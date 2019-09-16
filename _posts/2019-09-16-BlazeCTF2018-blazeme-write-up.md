@@ -249,7 +249,7 @@ $
 # 2. Slab Allocator
 
 취약점을 찾기 위해서는 `SLAB Allocator`[^slab_allocator]를 이해해야 한다.
-Slab Allocator는 동적 메모리 할당시 ptmalloc과는 다르게 힙 영역에 청크를 위한 메타데이터를 저장하지 않으며, 할당 해제시에 청크 첫 부분에 FP(Free Pointer)를 설정하여 Simple Linked List처럼 다음 Freed Chunk를 가르킨다.
+Slab Allocator는 동적 메모리 할당시 ptmalloc과는 다르게 힙 청크 내부에 메타데이터를 저장하지 않으며, 할당 해제시에 청크 첫 부분에 FP(Free Pointer)를 설정하여 Simple Linked List처럼 다음 Freed Chunk를 가르킨다.
 
 간단하게 그림으로 표현하자면, 문자 A B C를 각각 64바이트씩 할당한다면 아래와 같은 모습으로 할당이 된다.
 
