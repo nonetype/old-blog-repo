@@ -42,6 +42,7 @@ $ make menuconfig
 
 `Kernel hacking > Compile-time checks and compiler options`로 이동 후 `Compile the kernel with debug info`를 체크
 
+**- KASAN이 필요하면**
 `Kernel hacking > Memory Debugging`로 이동 후 `KASan: runtime memory debugger` 체크, `KAsan: extra checks` 체크
 
 **2019-09-17 추가**
