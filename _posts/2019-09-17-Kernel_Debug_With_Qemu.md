@@ -44,6 +44,9 @@ $ make menuconfig
 
 `Kernel hacking > Memory Debugging`로 이동 후 `KASan: runtime memory debugger` 체크, `KAsan: extra checks` 체크
 
+**2019-09-17 추가**
+`Processor type and features`로 이동, `Randomize the address of the kernel image (KASLR)` 체크 해제
+
 이후 esc키를 눌러 저장하고 나온다.
 make를 시작하자.
 
@@ -231,9 +234,61 @@ $ qemu-system-x86_64 -kernel bzImage -append "console=ttyS0 root=/dev/sda debug"
 root@syzkaller:~#
 ```
 
-ifconfig가 없으니 <https://debian.pkgs.org/9/debian-main-amd64/net-tools_1.60+git20161116.90da8a0-1_amd64.deb.html>에서 net-tools deb 패키지를 다운받아 `stretch.img` 파일시스템 내에 넣어줬다.
+파일시스템 최대 사이즈를 조절하려면 `dd if=/dev/zero of=$RELEASE.img bs=1M seek=2047 count=1` 부분의 `seek=` 값을 변경하면 된다. (2047 = 2GB)
 
+ssh 접속은 hostOS에서 아래와 같은 방식으로 한다.
+```sh
+$ ssh -p10021 -i stretch.id_rsa root@localhost
+```
 
+# 4. Kernel Debugging with Qemu
+일단 실행중인 Qemu를 종료하고 아래 명령을 통해 gdb를 실행한다.
+```sh
+nonetype@pwn:~/linux/linux-4.17$ ls
+COPYING        Kbuild    MAINTAINERS     README      block       crypto    fs       ipc     mm               net      security  usr      vmlinux.o
+CREDITS        Kconfig   Makefile        System.map  built-in.a  drivers   include  kernel  modules.builtin  samples  sound     virt
+Documentation  LICENSES  Module.symvers  arch        certs       firmware  init     lib     modules.order    scripts  tools     vmlinux
+nonetype@pwn:~/linux/linux-4.17$ gdb -q vmlinux
+Reading symbols from vmlinux...done.
+GEF for linux ready, type `gef' to start, `gef config' to configure
+77 commands loaded for GDB 8.1.0.20180409-git using Python engine 3.6
+[*] 3 commands could not be loaded, run `gef missing` to know why.
+gef➤
+```
+
+`start_kernel` 함수에 bp를 걸어보자.
+
+```sh
+gef➤  b * start_kernel
+Breakpoint 1 at 0xffffffff83928d6e: file init/main.c, line 532.
+gef➤
+```
+
+이제 `target remote` 명령을 통해 gdb attach 대기를 시켜놓고 qemu를 켠다.
+
+**debugger**
+```sh
+gef➤  target remote localhost:1234
+```
+
+**run qemu**
+```sh
+$ qemu-system-x86_64 -kernel bzImage -append "console=ttyS0 root=/dev/sda debug" -hda stretch.img -net user,hostfwd=tcp::10021-:22 -net nic -nographic -m 2G -smp 2 -s
+WARNING: Image format was not specified for 'stretch.img' and probing guessed raw.
+         Automatically detecting the format is dangerous for raw images, write operations on block 0 will be restricted.
+         Specify the 'raw' format explicitly to remove the restrictions.
+qemu-system-x86_64: warning: TCG doesn't support requested feature: CPUID.01H:ECX.vmx [bit 5]
+qemu-system-x86_64: warning: TCG doesn't support requested feature: CPUID.01H:ECX.vmx [bit 5]
+
+(paused)
+```
+
+**debugger**
+```sh
+
+```
+
+또 kaslr이 걸려있나보다.
 
 # References
 <https://tistory.0wn.kr/368>
