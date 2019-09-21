@@ -296,3 +296,6 @@ qemu-system-x86_64: warning: TCG doesn't support requested feature: CPUID.01H:EC
 
 
 <https://github.com/google/syzkaller/blob/master/tools/create-image.sh>
+
+
+<https://willow72.tistory.com/>
