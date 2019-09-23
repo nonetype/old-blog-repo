@@ -12,8 +12,10 @@ author:
 
 remote_theme: chesterhow/tale
 
-permalink:    /:year-:month-:day/:title
-paginate:     5
+permalink: /:year-:month-:day/:title
+paginate: 5
+sort_field: 'date'
+sort_reverse: true
 
 plugins:
   - jekyll-paginate
