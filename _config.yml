@@ -17,13 +17,11 @@ paginate: 5
 sort_field: 'date'
 sort_reverse: true
 
+markdown: kramdown
+
 plugins:
   - jekyll-paginate
   - jekyll-remote-theme
 
 # Excludes
 exclude: [ Gemfile, Gemfile.lock, tale.gemspec ]
-
-markdown: redcarpet
-redcarpet:
- extensions: ["no_intra_emphasis", "fenced_code_blocks", "autolink", "tables", "with_toc_data"]
