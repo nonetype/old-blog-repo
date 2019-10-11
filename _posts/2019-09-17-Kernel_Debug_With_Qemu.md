@@ -48,6 +48,10 @@ $ make menuconfig
 **2019-09-17 추가**
 `Processor type and features`로 이동, `Randomize the address of the kernel image (KASLR)` 체크 해제
 
+**2019-10-11 추가**
+`General setup / Enable userfaultfd() systemm call` 체크시 Exploit할 때 `userfault` syscall을 사용할 수 있다.
+추가로 `Disable heap randomize` 체크시 힙 디버깅이 편해진다!!!
+
 이후 esc키를 눌러 저장하고 나온다.
 make를 시작하자.
 
