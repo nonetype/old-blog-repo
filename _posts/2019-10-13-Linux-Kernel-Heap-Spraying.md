@@ -2,7 +2,11 @@
 layout: post
 title: "Linux kernel Heap Spraying Techniques"
 author: "nonetype"
+categories: pwn
+tags: linux_kernel
 ---
+
+# 목차
 
 1. TOC
 {:toc}

@@ -2,13 +2,22 @@
 layout: post
 title: "[SOLVED] Failed to start Raise network interfaces."
 author: "nonetype"
+categories: dev
+tags: vm
 ---
 
 qemu에서 네트워크 설정.
 
 ---
 
-# 1. Failed to start
+# 목차
+
+1. TOC
+{:toc}
+
+---
+
+# Failed to start
 
 qemu에서 커널 실행시 아래와 같은 오류가 나타난다.
 
@@ -91,5 +100,5 @@ root@syzkaller:~# cat /etc/udev/rules.d/10-rename-network.rules
 SUBSYSTEM=="net", ACTION=="add", ATTR{address}="52:54:00:12:34:56", NAME="eth0"
 ```
 
-# 2. References
+# References
 <https://lux.cuenet.kr/105>

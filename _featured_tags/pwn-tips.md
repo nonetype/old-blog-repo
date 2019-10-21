@@ -1,8 +1,8 @@
 ---
 layout: tag-blog
-title: Linux Kernel
-slug: linux_kernel
+title: Tips
+slug: pwn_tips
 category: pwn
 menu: false
-order: 1
+order: 2
 ---

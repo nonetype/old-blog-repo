@@ -2,13 +2,22 @@
 layout: post
 title: "[SOLVED] Failed to mount /sys/kernel/config"
 author: "nonetype"
+categories: dev
+tags: vm
 ---
 
 Qemu 부팅시 emergency mode로 진입해버리는 오류를 고쳐보자.
 
 ---
 
-# 1. Failed to mount
+# 목차
+
+1. TOC
+{:toc}
+
+---
+
+# Failed to mount
 qemu로 커널 부팅시 아래와 같은 에러가 나타난다.
 
 ```sh
@@ -74,7 +83,7 @@ nonetype@pwn:~/linux/linux-4.17$
 
 `make all -j4` 명령을 통해 다시 컴파일하면 해결된다.
 
-# 2. References
+# References
 <https://github.com/google/syzkaller/issues/760>
 
 

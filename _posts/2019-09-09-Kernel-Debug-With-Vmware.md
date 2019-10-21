@@ -2,15 +2,25 @@
 layout: post
 title: "Linux Kernel debugging with Vmware"
 author: "nonetype"
+categories: dev
+tags: vm
 ---
 
 
 VMware를 이용해 리눅스 커널 디버깅을 해보자
 
+---
 
-## Stage 1 - guestOS Setting
+# 목차
 
-### Debug symbol download
+1. TOC
+{:toc}
+
+---
+
+# guestOS Setting
+
+## Debug symbol download
 `sudo apt-get update && sudo apt-get upgrade` 명령을 통해 패키지 업그레이드를 진행한다.
 
 이후 다음 명령을 실행한다.
@@ -45,7 +55,7 @@ debug@debug-virtual-machine:~$
 
 이 파일을 hostOS(debugger를 실행할)로 옮겨준다.
 
-### KASLR 해제
+## KASLR 해제
 `/etc/default/grub`의 `GRUB_CMDLINE_LINUX_DEFAULT`필드에 "nokaslr"를 추가해준다.
 ```sh
 # If you change this file, run 'update-grub' afterwards to update
@@ -86,7 +96,7 @@ GRUB_CMDLINE_LINUX=""
 
 설정 저장 후 `sudo update-grub` 필수!!!
 
-## Stage 2 - vmx configure
+# vmx configure
 
 guestOS의 VM file 경로로 이동해서 .vmx 파일의 마지막 줄에 다음 라인을 추가한다.
 
@@ -109,7 +119,7 @@ monitor.debugOnStartGuest64 = "TRUE"
 .vmx 파일 저장 후 guest OS를 부팅한다.
 
 
-## Stage 3 - remote attach
+# remote attach
 
 GDB를 또 컴파일하긴 귀찮으니 IDA로 guestOS에서 옮긴 vmlinux 파일을 깐다.
 
@@ -121,7 +131,7 @@ Hostname 필드는 `localhost`, Port는 `32bit- 8832, 64bit- 8864`(VMware debugg
 
 설정이 끝났으면 `Debugger - Attach to Process`를 클릭해 Remote attach한 후 디버깅을 시작한다!
 
-## Additional Info
+# Additional Info
 내가 할때는 왜인지는 모르겠지만 IDA로 확인한 vmlinux 심볼과 실제 guestOS에서 실행되는 함수 주소가 달랐다.
 간단한 예를 들면, IDA에서 functions window로 확인한 `vfs_kern_mount()`의 주소는 `0xffffffff8129D7F0`이었는데, 실제 guestOS에서 `cat /proc/kallsyms | grep vfs_kern_mount`로 확인한 주소값은 `0xffffffffaea9d7f0`이었다.
 
@@ -133,7 +143,7 @@ Hostname 필드는 `localhost`, Port는 `32bit- 8832, 64bit- 8864`(VMware debugg
 ![result](/assets/result.PNG)
 
 
-## References
+# References
 http://jidanhunter.blogspot.com/2015/01/linux-kernel-debugging-with-vmware-and.html
 
 https://wiki.ubuntu.com/Debug%20Symbol%20Packages

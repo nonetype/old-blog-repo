@@ -2,17 +2,25 @@
 layout: post
 title: "blazeme - BlazeCTF 2018"
 author: "nonetype"
-category: "linux"
+categories: pwn
+tags: linux_kernel
 ---
 
 BOF를 통한 ret2usr kernel exploit
 
 ---
 
+# 목차
+
+1. TOC
+{:toc}
+
+---
+
 대부분의 보호기법이 꺼져있는 환경에서 커널 익스플로잇 문제이다.
 > [download](/assets/blazeme.tar.gz)
 
-# 1. Analysis
+# Analysis
 첨부파일 압축을 해제하면 `images/` 디렉터리 내에 다음과 같은 파일들이 존재한다.
 
 ```bash
@@ -246,7 +254,7 @@ $
 예상대로 `Hello nonetype`이 출력됬다.
 
 
-# 2. Slab Allocator
+# Slab Allocator
 
 취약점을 찾기 위해서는 `SLAB Allocator`[^slab_allocator]를 이해해야 한다.
 Slab Allocator는 동적 메모리 할당시 ptmalloc과는 다르게 힙 청크 내부에 메타데이터를 저장하지 않으며, 할당 해제시에 청크 첫 부분에 FP(Free Pointer)를 설정하여 Simple Linked List처럼 다음 Freed Chunk를 가르킨다.
@@ -280,7 +288,7 @@ v        v        v        v
 ```
 
 
-# 3. Finding Vulnerability
+# Finding Vulnerability
 
 먼저 아래 그림을 다시 한번 살펴보자.
 ```
@@ -430,7 +438,7 @@ RIP: strncat+0x37/0x50 RSP: ffffc9000015fc30
 strncat 위치에서 kernel stack overflow가 떴다.
 
 
-# 4. Exploitation
+# Exploitation
 
 Kernel Stack BOF를 통해 rip를 제어할 수 있게 되었으므로
 
@@ -541,7 +549,7 @@ $
 ```
 
 
-# 5.References
+# References
 [blazeme write-up] <https://devcraft.io/2018/04/25/blazeme-blaze-ctf-2018.html>
 
 [kernel exploit(wikicon 발표자료)] <https://duasynt.com/slides/smep_bypass.pdf>

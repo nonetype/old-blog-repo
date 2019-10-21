@@ -1,16 +1,24 @@
 ---
 layout: post
 title: "Linux Kernel sys_mount analysis"
-categories: linux kernel analysis
+categories: dev
+tags: linux_kernel
 ---
 
 
 
 linux kernel sys_mount 분석기
 
+---
 
+# 목차
 
-#### 1. VFS(Virtual File System)
+1. TOC
+{:toc}
+
+---
+
+# VFS(Virtual File System)
   VFS는 User Mode 프로세스에 동일한 인터페이스를 제공하고, 다양한 파일 시스템을 효과적으로 구현하기 위한 '표준 유닉스 파일시스템과 관련된 모든 System Call을 수행하는 Kernel Layer'이다.
 
   VFS는 각 파일, 파일 시스템과 관련된 시스템 콜을 처리하며, 파일 시스템에 관련된 자료구조 관리, 파일 시스템을 순회하는 효율적인 동작 및 특정 파일 시스템 모듈과 상호작용한다.
@@ -23,7 +31,7 @@ linux kernel sys_mount 분석기
 ![vfs_structure](https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/IO_stack_of_the_Linux_kernel.svg/440px-IO_stack_of_the_Linux_kernel.svg.png)
 
 
-#### 2. sys_mount() 분석
+# sys_mount() 분석
 커널에서 sys_mount syscall이 호출될 경우, `fs/namespace.c`의 `int ksys_mount` 함수가 호출된다.
 
 ```c
@@ -334,7 +342,8 @@ out:
 `mount_fs()`에서는 `type->mount()`를 통해 각 파일 시스템 드라이버에 선언되어있는 함수 포인터를 호출함으로써 각 드라이버별 마운트 과정을 시작한다.
 
 ***
-#### 기타 정보
+
+# 기타 정보
 
 get_sb(get SuperBlock) 함수
 ```c
@@ -567,7 +576,7 @@ static void __exit exit_btrfs_fs(void)
 ```
 
 ***
-#### References.
+# References.
 
 https://en.wikipedia.org/wiki/Virtual_file_system
 

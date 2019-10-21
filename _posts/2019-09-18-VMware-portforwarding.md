@@ -2,11 +2,22 @@
 layout: post
 title: "VMware Port Forwarding for Debugging"
 author: "nonetype"
+categories: dev
+tags: vm
 ---
 
 Qemu Linux Kernel 디버깅을 위해 VMware 포트포워딩을 해보자.
 
-# 1. VMware network setting
+---
+
+# 목차
+
+1. TOC
+{:toc}
+
+---
+
+# VMware network setting
 
 VMware 창의 `Edit - Virtual Network Editor`를 열어준 후, 오른쪽 밑 Help 버튼 위의 `Change Settings`를 클릭한다.
 
@@ -35,7 +46,7 @@ VMware 창의 `Edit - Virtual Network Editor`를 열어준 후, 오른쪽 밑 He
 이후 OK를 눌러 저장하고 나온다.
 
 
-# 2. IDA Remote Debugger Attach
+# IDA Remote Debugger Attach
 
 디버깅할 Qemu Machine을 실행시킨 후, IDA로 vmlinux 파일을 열자.
 
@@ -48,5 +59,5 @@ VMware 창의 `Edit - Virtual Network Editor`를 열어준 후, 오른쪽 밑 He
 
 `Debugger - Attach to Process`를 클릭해서 Remote Debugging을 시작하면 된다!
 
-# 3. References
+# References
 <https://crehacktive3.blog.me/221155296135>

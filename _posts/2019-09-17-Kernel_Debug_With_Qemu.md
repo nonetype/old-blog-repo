@@ -2,14 +2,22 @@
 layout: post
 title: "Linux Kernel debugging with Qemu"
 author: "nonetype"
-category: "linux"
+categories: dev
+tags: vm
 ---
 
 리눅스 커널 빌드 & Qemu를 통한 디버그
 
 ---
 
-# 1. Kernel Configure&Build
+# 목차
+
+1. TOC
+{:toc}
+
+---
+
+# Kernel Configure&Build
 일단 리눅스 커널 소스 다운로드 후 압축 해제한다.
 여기선 4.17 버전으로 진행하지만, 원하는 버전이 있다면 아래 링크에서 선택하여 다운로드 받을 수 있다.
 <https://mirrors.edge.kernel.org/pub/linux/kernel/v4.x/>
@@ -59,7 +67,7 @@ make를 시작하자.
 $ make all
 ```
 
-# 2. Create root filesystem
+# Create root filesystem
 
 빌드가 오래 걸리니 그동안 root filesystem을 구성한다.
 
@@ -211,7 +219,7 @@ chroot  create-image.sh  linux-4.17  linux-4.17.tar.xz  stretch.id_rsa  stretch.
 nonetype@pwn:~/linux$
 ```
 
-# 3. Run Linux Kernel
+# Run Linux Kernel
 커널 빌드가 완료되면, 빌드된 bzImage를 확인해보자.
 
 ```sh
@@ -246,7 +254,7 @@ ssh 접속은 hostOS에서 아래와 같은 방식으로 한다.
 $ ssh -p10021 -i stretch.id_rsa root@localhost
 ```
 
-# 4. Kernel Debugging with Qemu
+# Kernel Debugging with Qemu
 일단 실행중인 Qemu를 종료하고 아래 명령을 통해 gdb를 실행한다.
 ```sh
 nonetype@pwn:~/linux/linux-4.17$ ls
