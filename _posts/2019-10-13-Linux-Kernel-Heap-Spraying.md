@@ -6,6 +6,8 @@ categories: pwn
 tags: linux_kernel
 ---
 
+some Techniques to Spraying Linux kernel heap
+
 # 목차
 
 1. TOC
