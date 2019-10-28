@@ -24,9 +24,17 @@ Linux Kernel Exploit은 userspace binary exploit과 다르게 '직접' `kmalloc`
 3. `msgsnd()`
 
 
+# add_key()
+
+
+# send[m]msg()
+
+
+# msgsnd()
+
+
 # References
 Linux Kernel universal heap spray | <https://duasynt.com/blog/linux-kernel-heap-spray>
-
 twitter@Vitaly - add_key() | <https://twitter.com/vnik5287/status/806778450304319489>
-
 Dissecting a 17-year-old kernel bug | <https://cdn2.hubspot.net/hubfs/2518562/beVX/bevx-Dissecting-a-17-year-old-Vitaly-Nikolenko.pdf>
+CVE-2017-2636: exploit the race condition in the n_hdlc Linux kernel driver bypassing SMEP | <https://a13xp0p0v.github.io/2017/03/24/CVE-2017-2636.html>
