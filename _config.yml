@@ -50,13 +50,13 @@ google_analytics:    UA-92346434-1
 disqus_shortname:    nonetype
 
 # This text will appear in the footer of every page. Markdown enabled.
-copyright:           '&copy; 2017. by isme2n'
+copyright:           '&copy; 2019. by nonetype'
 
 # Format of the permalinks
 permalink:           pretty
 
 # Pagination configuration (used by the `blog` layout)
-paginate:            8
+paginate:            10
 paginate_path:       '/page-:num/'
 
 # If you are upgrading form a v5 verison of Hydejack, uncomment the two lines below,
