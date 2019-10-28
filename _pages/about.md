@@ -1,15 +1,29 @@
 ---
 layout: post
 title: "About"
-author: "Chester"
+author: "NoneType"
 permalink: /about/
 ---
 
-A friend of mine writes short stories. One sunny day, I asked if he wanted a website to showcase his works and he agreed. I decided to use GitHub Pages to host his site. That way he wouldn't have to buy a domain and a server.
+# WonYoung Jung
+## Introduce
+Pwner in south korea, known as 'NoneType'
 
-While doing some research up on GitHub Pages, I accidentally chanced upon this _simple, blog-aware, static site generator_ called [Jekyll](https://jekyllrb.com/) which works really well with GitHub Pages. I figured it would do just fine for my friend and I set about searching for a pretty theme. I wanted a theme with a _book-ish_ vibe. Unfortunately, most of the themes were too modern. Eventually, I caved and begun working on my own theme. With the help of [Poole](https://github.com/poole/poole), the Jekyll Butler, I was able to build **Tale**.
+Interested in 0-Day Finding / 1-Day Analysis (Linux Kern, Browser, etc..)
 
-## Contribute
-Feel free to create an issue or make a pull request on [GitHub](https://github.com/chesterhow/tale).
+also trying to solve CTF-Problems
 
-Thanks for reading!
+## Career
+### 2019
+- Best of the Best (A.K.A BoB) 8th Mentee
+
+### 2018
+- Belluminar 2018(in POC Conference) - as TeamH4C member
+- GeekPwn 2018 - Router Exploit(DLink, Netgear, Tenda)
+- OpenSecureLab 2nd seminar speaker - 'Finding Software bugs with Fuzzing'
+
+## Contact
+- Email: agilemee@gmail.com
+- [FaceBook](https://www.facebook.com/nonetype.pwn)
+- [Twitter](https://twitter.com/nonetype_pwn)
+- [Github](https://github.com/nonetype)
