@@ -296,12 +296,7 @@ qemu-system-x86_64: warning: TCG doesn't support requested feature: CPUID.01H:EC
 (paused)
 ```
 
-**debugger**
-```sh
-
-```
-
-또 kaslr이 걸려있나보다.
+KASLR이 해제되어 있다면 vmlinux 파일의 심볼과 qemu 심볼이 매치되어 정상적으로 bp가 걸린다.
 
 # References
 <https://tistory.0wn.kr/368>
