@@ -17,6 +17,7 @@ also trying to solve CTF-Problems
 ## Career
 ### 2019
 - Best of the Best (A.K.A BoB) 8th Vulnerability Analysis Track Mentee
+- Member of Defenit(CTF Team), as Pwner
 
 ### 2018
 - Belluminar 2018(in POC Conference) - as TeamH4C member
