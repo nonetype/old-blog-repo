@@ -69,7 +69,7 @@ void spray_addkey(int count) {
 ## Overview
 `add_key` syscall 호출시 `kvmalloc` 호출[1] 후 `copy_from_user` 호출[2]을 통해 힙 영역에 사용자가 인자로 전달한 문자열을 스프레잉하게 된다.
 
-Header의 크기는 15 Byte, 최대 할당 크기는 `1024 * 1024 - 1`[3] 이다.
+<!--Header의 크기는 15 Byte, 최대 할당 크기는 `1024 * 1024 - 1`[3] 이다.-->
 
 ## Syscall Analysis
 ```c
@@ -186,10 +186,11 @@ void spray_sendmsg() {
 ## Overview
 `send(m)msg` syscall 호출시 `sock_kmalloc` 호출[1] 후 `copy_from_user` 호출[2]을 통해 힙 영역에 사용자가 인자로 전달한 문자열을 스프레잉하게 된다.
 
-Header의 크기는 ? Byte, 최대 할당 크기는 `INT_MAX`[3] 이다.
+<!--Header의 크기는 ? Byte, 최대 할당 크기는 `INT_MAX`[3] 이다.
 ```c
 #define INT_MAX			((int)(~0U>>1))
 ```
+-->
 
 ## Syscall Analysis
 ```c
@@ -265,7 +266,7 @@ void spray_msgsnd(int count) {
 ## Overview
 `msgsnd` syscall 호출시 `load_msg` 호출[1], `alloc_msg` 호출[2], `kmalloc` 호출[3]을 통해 동적 메모리 할당 후 `copy_from_user` 호출[4]을 통해 힙 영역에 사용자가 인자로 전달한 문자열을 스프레잉하게 된다.
 
-Header의 크기는 0x30 Byte, 최대 할당 크기는 `INT_MAX`[3] 이다.
+<!--Header의 크기는 0x30 Byte, 최대 할당 크기는 `INT_MAX`[3] 이다.-->
 
 ## Syscall Analysis
 
