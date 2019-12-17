@@ -69,6 +69,8 @@ void spray_addkey(int count) {
 ## Overview
 `add_key` syscall 호출시 `kvmalloc` 호출[1] 후 `copy_from_user` 호출[2]을 통해 힙 영역에 사용자가 인자로 전달한 문자열을 스프레잉하게 된다.
 
+단, 할당 후 해제되기 때문에 `userfaultfd`를 설정하는 방식[[link]](https://duasynt.com/blog/linux-kernel-heap-spray)으로 할당을 유지해줘야 한다. (thanks to jinmo123)
+
 <!--Header의 크기는 15 Byte, 최대 할당 크기는 `1024 * 1024 - 1`[3] 이다.-->
 
 ## Syscall Analysis
