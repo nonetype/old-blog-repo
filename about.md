@@ -3,7 +3,7 @@ layout: about
 title: "About"
 author: "NoneType"
 menu: true
-order: 10
+order: 99999
 ---
 
 # WonYoung Jung
