@@ -17,6 +17,7 @@ also trying to solve CTF-Problems
 ## Career
 ### 2020
 - Best of the Best 8th TOP40
+- Seminar on 'Affiliated Research Institute of ETRI', 'Kernel Exploit with Filesystem Fuzzer'
 
 ### 2019
 - Best of the Best (A.K.A BoB) 8th Vulnerability Analysis Track Mentee
@@ -27,6 +28,13 @@ also trying to solve CTF-Problems
 - Belluminar 2018(in POC Conference) - as TeamH4C member
 - GeekPwn 2018 - Router Exploit(DLink, Netgear, Tenda)
 - OpenSecureLab 2nd seminar speaker - 'Finding Software bugs with Fuzzing'
+
+## Projects
+### 2019
+- 'Kernel Exploit with Filesystem Fuzzer', as BoB project
+  - Seminar on 'Affiliated Research Institute of ETRI'
+  - HITBSECCONF AMSTERDAM 2020 - CFP Accepted
+
 
 ## Contact
 - Email: [agilemee@gmail.com](mailto:agilemee@gmail.com)
