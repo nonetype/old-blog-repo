@@ -17,7 +17,7 @@ also trying to solve CTF-Problems
 ## Career
 ### 2020
 - Best of the Best 8th TOP40
-- Seminar on 'Affiliated Research Institute of ETRI', 'Kernel Exploit with Filesystem Fuzzer'
+- Seminar at 'Affiliated Research Institute of ETRI', 'Kernel Exploit with Filesystem Fuzzer'
 
 ### 2019
 - Best of the Best (A.K.A BoB) 8th Vulnerability Analysis Track Mentee
@@ -32,7 +32,7 @@ also trying to solve CTF-Problems
 ## Projects
 ### 2019
 - 'Kernel Exploit with Filesystem Fuzzer', as BoB project
-  - Seminar on 'Affiliated Research Institute of ETRI'
+  - Seminar at 'Affiliated Research Institute of ETRI'
   - HITBSECCONF AMSTERDAM 2020 - CFP Accepted
 
 
