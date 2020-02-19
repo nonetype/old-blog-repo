@@ -3,9 +3,13 @@
 <article id="post-{{ post.id | slice: 1,9999 }}" class="post{% if include.link_title %} mb6{% endif %}" role="article">
   <header>
     <h1 class="post-title">
-      {% if include.link_title %}<a href="{{ post.url | relative_url }}" data-flip="title">{% endif %}
-        {{ post.title }}
-        {% if include.link_title %}</a>{% endif %}
+      {% if include.link_title %}
+        <a href="{{ post.url | relative_url }}" data-flip="title">
+      {% endif %}
+      {{ post.title }}
+      {% if include.link_title %}
+        </a>
+      {% endif %}
     </h1>
 
     <p class="post-date heading">
@@ -25,7 +29,7 @@
   {% endunless %}
   {% endfor %}
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <!-- <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script> -->
   {% unless include.excerpt %}
   <div class="markdown-body">
     {% if post.header-img %}
@@ -52,22 +56,22 @@
         }
       }
     </style>
-    <ins class="adsbygoogle myAd1190" data-ad-client="ca-pub-9134477021095729" data-ad-slot="6559875097">
-    </ins>
-    <script>
+    <!-- <ins class="adsbygoogle myAd1190" data-ad-client="ca-pub-9134477021095729" data-ad-slot="6559875097">
+    </ins> -->
+    <!-- <script>
       (adsbygoogle = window.adsbygoogle || []).push({});
-    </script>
+    </script> -->
     <br />
     {{ post.content }}
     <br />
     <br />
     <!-- 블로그-하단-반응형 -->
-    <ins class="adsbygoogle" style="display:block; width:100%; height:300px;" data-ad-client="ca-pub-9134477021095729"
+    <!-- <ins class="adsbygoogle" style="display:block; width:100%; height:300px;" data-ad-client="ca-pub-9134477021095729"
       data-ad-slot="2380354290" data-ad-format="auto">
-    </ins>
-    <script>
+    </ins> -->
+    <!-- <script>
       (adsbygoogle = window.adsbygoogle || []).push({});
-    </script>
+    </script> -->
   </div>
   <script>
 
