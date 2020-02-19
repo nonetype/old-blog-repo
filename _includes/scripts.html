@@ -1,10 +1,10 @@
 {% if site.google_analytics %}
-<script>
+<!-- <script>
   window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
   ga('create', '{{ site.google_analytics }}', 'auto');
   ga('send', 'pageview');
   loadJSDeferred('https://www.google-analytics.com/analytics.js');
-</script>
+</script> -->
 {% endif %}
 
 {% assign google_fonts = site.google_fonts | default:"Roboto+Slab:700|Noto+Serif:400,400i,700,700i" %}
@@ -29,7 +29,7 @@
 <!--<![endif]-->
 
 {% unless page.redirect %}
-  <!--[if gt IE 9]><!---->
+  <!--[if gt IE 9]>-->
   {% capture js_url %}{% link assets/js/hydejack.js %}?v=6.4.0{% endcapture %}
   <script>loadJSDeferred('{{ js_url | relative_url }}');</script>
 
