@@ -26,6 +26,7 @@ IDT Overwrite and mitigations in Linux Kernel
 
 
 # Abstract
+`인터럽트와 인터럽트 레지스터, 인터럽트 테이블 소개 부분`
 커널에는 다양한 인터럽트가 존재한다. '3 / 0'같은 연산을 수행할 때 발생하는 `Zero-Division Error`, User-mode에서 Kernel-mode로 진입하는 `System call` 등이 대표적인 인터럽트의 예다.
 
 이런 인터럽트가 발생하면, 이를 핸들링 하기 위한 함수를 호출하는데, 이 때 해당 인터럽트의 핸들링 함수를 찾기 위해 사용하는 것이 IDT, 'Interrupt Descriptor Table' 이다.
@@ -34,6 +35,34 @@ KASLR이 적용되고 있기 때문에, IDT의 Base Address 또한 가변적이�
 간단하게 다음과 같이 나타낼 수 있다.
 
 {% gist 3015348ffef969a9531c05f333072ac9 %}
+
+IDT를 왜 사용하는지, IDTR의 값을 어떻게 사용하는지 
+실제로 커널의 IDT Register를 확인하는 방법은 생각보다 간단하다.
+커널 자체에서 idt reigster의 값을 가져올 수 있는 명령어, `sidt` 명령을 지원하므로 다음과 같이 인라인 어셈블리를 통해 IDT Register가 가르키고 있는 IDT Base를 출력할 수 있다.
+
+```c
+#include <stdio.h>
+#include <stdint.h>
+
+struct idtr {
+	uint16_t limit;
+	uint64_t base;
+} __attribute__ ((packed));
+
+void printIDTRBase(){
+	struct idtr idtr;
+	asm("sidt %0" : "=m" (idtr));
+	
+	printf("idtr: %llx\n", idtr.base);
+	return;
+}
+
+int main() {
+
+    printIDTRBase();
+    return 0;
+}
+```
 
 http://coffeenix.net/doc/develop/ia-interrupt/ch1-1.html
 https://itguava.tistory.com/16
@@ -44,6 +73,7 @@ https://m.blog.naver.com/PostView.nhn?blogId=il0veu2&logNo=56772995&proxyReferer
 
 
 # The IDT
+`인터럽트 테이블의 구조체 구조 및 확인법 / IDT Gate의 DPL(인터럽트 권한)도 설명해야 함`
 https://github.com/NJhyo/bobfuzzer/blob/master/Exploit/NoneType/2019-09-23-Linux-Kernel-Exploit-Development-lab4.md#idt-overwrite
 
 ```
@@ -69,9 +99,12 @@ https://github.com/NJhyo/bobfuzzer/blob/master/Exploit/NoneType/2019-09-23-Linux
 <!--![55392467](https://i.imgur.com/XmpVSvW.jpg)-->
 
 # IDT Overwrite
+`IDT Overwrite를 위해 생성한 매크로(x64), 그리고 그 함수를 이용하여 오버라이트하는 과정, 최종적으로 오버라이트 한 인터럽트를 호출하는 것 까지`
 https://resources.infosecinstitute.com/hooking-idt/#gref
 
 # Mitigation
+`해당 기법을 막기 위해 추가된 보호기법 설명 (ro_after_init 외 다수, 아래 링크에 존재)`
 https://kernsec.org/wiki/index.php/Exploit_Methods/Function_pointer_overwrite
 
 # References
+`레퍼런스 문서 주소 추가`
