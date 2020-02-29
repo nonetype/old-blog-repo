@@ -1,8 +1,8 @@
 ---
 layout: tag-blog
-title: 2019
-slug: writeup2019
+title: 2020
+slug: writeup2020
 category: writeup
 menu: false
-order: 2019
+order: 2020
 ---
