@@ -17,7 +17,10 @@ IDT Overwrite and mitigations in Linux Kernel
 
 - [목차](#목차)
 - [Abstract](#abstract)
-- [The IDT](#the-idt)
+- [The IDTR](#the-idtr)
+  - [Leak IDTR](#leak-idtr)
+    - [Result](#result)
+- [The IDT Gate](#the-idt-gate)
 - [IDT Overwrite](#idt-overwrite)
 - [Mitigation](#mitigation)
 - [References](#references)
@@ -31,15 +34,19 @@ IDT Overwrite and mitigations in Linux Kernel
 
 이런 인터럽트가 발생하면, 이를 핸들링 하기 위한 함수를 호출하는데, 이 때 해당 인터럽트의 핸들링 함수를 찾기 위해 사용하는 것이 IDT, 'Interrupt Descriptor Table' 이다.
 
+이 IDT 내의 함수 포인터를 변조하면 임의 코드 실행이 가능하게 되는데, 이를 위해 IDT의 구조와 IDTR(IDT Register), 어떤 방식으로 임의 코드 실행을 만들어 내는지 알아보자.
+
+
+# The IDTR
 KASLR이 적용되고 있기 때문에, IDT의 Base Address 또한 가변적이다. 따라서 IDT Base Address는 IDTR(Interrupt Descriptor Table Register)의 값으로 존재하게 된다.
 간단하게 다음과 같이 나타낼 수 있다.
 
 {% gist 3015348ffef969a9531c05f333072ac9 %}
 
-IDT를 왜 사용하는지, IDTR의 값을 어떻게 사용하는지 
-실제로 커널의 IDT Register를 확인하는 방법은 생각보다 간단하다.
-커널 자체에서 idt reigster의 값을 가져올 수 있는 명령어, `sidt` 명령을 지원하므로 다음과 같이 인라인 어셈블리를 통해 IDT Register가 가르키고 있는 IDT Base를 출력할 수 있다.
+IDT 변조를 위해서는 IDTR의 값을 뽑아올 수 있어야 하는데, 실제로 커널의 IDT Register의 값을 확인하는 방법은 생각보다 간단하다.
+커널 자체에서 idt reigster의 값을 가져올 수 있는 명령어, `sidt` 명령을 지원하므로 아래와 같이 인라인 어셈블리를 통해 IDT Register가 가르키고 있는 IDT Base를 출력할 수 있다.
 
+## Leak IDTR
 ```c
 #include <stdio.h>
 #include <stdint.h>
@@ -64,6 +71,8 @@ int main() {
 }
 ```
 
+### Result
+
 http://coffeenix.net/doc/develop/ia-interrupt/ch1-1.html
 https://itguava.tistory.com/16
 https://wiki.kldp.org/KoreanDoc/html/EmbeddedKernel-KLDP/idt.html
@@ -72,7 +81,7 @@ https://m.blog.naver.com/PostView.nhn?blogId=il0veu2&logNo=56772995&proxyReferer
 
 
 
-# The IDT
+# The IDT Gate
 `인터럽트 테이블의 구조체 구조 및 확인법 / IDT Gate의 DPL(인터럽트 권한)도 설명해야 함`
 https://github.com/NJhyo/bobfuzzer/blob/master/Exploit/NoneType/2019-09-23-Linux-Kernel-Exploit-Development-lab4.md#idt-overwrite
 
