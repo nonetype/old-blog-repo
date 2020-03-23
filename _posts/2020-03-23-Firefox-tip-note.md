@@ -17,6 +17,8 @@ Tip note for Firefox analysis & exploitation
 - [Index](#index)
 - [Firefox note](#firefox-note)
   - [Build](#build)
+  - [Debug Array object](#debug-array-object)
+    - [Understand Type Masking](#understand-type-masking)
 - [Troubleshooting](#troubleshooting)
   - [TypeError: cannot create 'NoneType' instances while js/src/configure](#typeerror-cannot-create-nonetype-instances-while-jssrcconfigure)
     - [Solution](#solution)
@@ -48,6 +50,128 @@ make
 ```
 
 이후 `js> ` 형식의 인터프리터 쉘 창이 뜨면 성공!
+
+## Debug Array object
+
+gdb를 통해 array object가 어떤 방식으로 참조되는지 알아보자.
+
+```cpp
+nonetype@box:~/hack/browser/firefox/build-72.0$ gdb dist/bin/js
+Reading symbols from dist/bin/js...done.
+warning: File "/home/nonetype/hack/browser/firefox/build-72.0/dist/bin/js-gdb.py" auto-loading has been declined by your 'auto-load safe-path' set to "$debugdir:$datadir/auto-load".
+To enable execution of this file add
+        add-auto-load-safe-path /home/nonetype/hack/browser/firefox/build-72.0/dist/bin/js-gdb.py
+line to your configuration file "/home/nonetype/.gdbinit".
+To completely disable this security protection add
+        set auto-load safe-path /
+line to your configuration file "/home/nonetype/.gdbinit".
+For more information about this security protection see the
+"Auto-loading safe path" section in the GDB manual.  E.g., run from the shell:
+        info "(gdb)Auto-loading safe path"
+GEF for linux ready, type 'gef' to start, 'gef config' to configure
+77 commands loaded for GDB 8.1.0.20180409-git using Python engine 3.6
+[*] 3 commands could not be loaded, run 'gef missing' to know why.
+Error while writing index for '/home/nonetype/hack/browser/firefox/build-72.0/dist/bin/js': Can't open '/tmp/gef/js.gdb-index' for writing
+gef➤  b * js::math_atan
+Breakpoint 1 at 0xaf2e60: file /home/nonetype/hack/browser/firefox/firefox-72.0/js/src/jsmath.cpp, line 145.
+gef➤  r
+Starting program: /home/nonetype/hack/browser/firefox/build-72.0/dist/bin/js
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+[New Thread 0x7ffff648e700 (LWP 12491)]
+[New Thread 0x7ffff5aff700 (LWP 12492)]
+[Thread 0x7ffff648e700 (LWP 12491) exited]
+[New Thread 0x7ffff5900700 (LWP 12493)]
+js> a = [0x41414141, 0x42424242, 0x43434343]
+[1094795585, 1111638594, 1128481603]
+js> a.length = 0xdeadbeef
+3735928559
+js> Math.atan(a)
+Thread 1 "js" hit Breakpoint 1, js::math_atan (cx=0x7ffff5b2a000, argc=0x1, vp=0x7ffff55e4098) at /home/nonetype/hack/browser/firefox/firefox-72.0/js/src/jsmath.cpp:145
+145     bool js::math_atan(JSContext* cx, unsigned argc, Value* vp) {
+gef➤  x/8gx vp
+0x7ffff55e4098: 0xfffe001ee1b8db80      0xfffe001ee1b71140
+0x7ffff55e40a8: 0xfffe001ee1b92040      0xfffb001ee1b4e820
+0x7ffff55e40b8: 0xfffa000000000000      0x0000000000000011
+0x7ffff55e40c8: 0x0000001ee1b3f0e0      0x0000001ee1b2f040
+gef➤
+```
+
+인자로 전달된 array `a`의 객체 포인터는 `vp+0x10`위치에 존재한다.
+
+여기서 특이한 점이, `vp+0x10` 위치에 존재하는 포인터, `0xfffe001ee1b92040`에서 타입 마스킹[^type_masking](여기서는 `0xfffe`, 다른 타입의 객체일 경우 값이 변화함)을 제거하기 위해 `& 0x7fffffffffff` 연산을 실행하고, 연산의 결과값이 실제 해당 객체가 존재하는 메모리 주소이다.
+
+gdb에서는 다음과 같이 간편하게 계산 가능하다.
+
+```cpp
+gef➤  x/32gx 0xfffe001ee1b92040 & 0x7fffffffffff
+0x1ee1b92040:   0x0000001ee1b6b820      0x0000001ee1b7cbd8
+0x1ee1b92050:   0x0000000000000000      0x0000001ee1b92070
+0x1ee1b92060:   0x0000000300000000      0xdeadbeef00000006
+0x1ee1b92070:   0xfff8800041414141      0xfff8800042424242
+0x1ee1b92080:   0xfff8800043434343      0x0000000000000000
+0x1ee1b92090:   0x0000000000000000      0x0000000000000000
+0x1ee1b920a0:   0x0000000000000000      0x0000000000000000
+0x1ee1b920b0:   0x0000000000000000      0x0000000000000000
+0x1ee1b920c0:   0x0000000000000000      0x0000000000000000
+0x1ee1b920d0:   0x0000000000000000      0x0000000000000000
+0x1ee1b920e0:   0x0000000000000000      0x0000000000000000
+0x1ee1b920f0:   0x0000000000000000      0x0000000000000000
+0x1ee1b92100:   0x0000000000000000      0x0000000000000000
+0x1ee1b92110:   0x0000000000000000      0x0000000000000000
+0x1ee1b92120:   0x0000000000000000      0x0000000000000000
+0x1ee1b92130:   0x0000000000000000      0x0000000000000000
+gef➤
+```
+
+Array의 인자로 넣었던 `0x41414141`, `0x42424242`, `0x43434343`과 `array.length`로 설정했던 `0xdeadbeef`도 보인다.
+
+배열 인자 값들도 객체 포인터와 동일하게 타입 마스킹 처리되어 앞에 `0xfff88`이 붙어있는 것을 확인할 수 있다.
+
+### Understand Type Masking 
+> Integer 형식의 변수로 보면 타입 마스킹 처리를 이해하기 편하다.
+> 먼저, 다음과 같은 `setInt32()` 함수가 존재한다.
+> ```cpp
+> void setInt32(int32_t i) {
+>  asBits_ = bitsFromTagAndPayload(JSVAL_TAG_INT32, uint32_t(i));
+>  MOZ_ASSERT(toInt32() == i);
+> }
+> ```
+> 위 배열의 값을 예로 들면, 배열 인덱스에 값을 채울 때 `setInt32(0x41414141);`가 호출되고, 해당 함수 내에서 `bitsFromTagAndPayload` 함수가 호출된다.
+> ```cpp
+> static constexpr uint64_t bitsFromTagAndPayload(JSValueTag tag,
+>                    PayloadType payload) {
+>   return (uint64_t(tag) << JSVAL_TAG_SHIFT) | payload;
+> }
+> ```
+> 
+> 결과적으로 `(uint64_t(JSVAL_TAG_INT32) << JSVAL_TAG_SHIFT) | payload` 연산이 이루어지는데, 각 `JSVAL_TAG`는 다음과 같다.
+> ```cpp
+> #if defined(JS_NUNBOX32)
+> #  define JSVAL_TAG_SHIFT 32 // if x86, 32
+> #elif defined(JS_PUNBOX64)
+> #  define JSVAL_TAG_SHIFT 47 // if x64, 47
+> #endif
+> ```
+>
+> ```cpp
+> JSVAL_TYPE_INT32 = 0x01
+> JSVAL_TAG_MAX_DOUBLE = 0x1FFF0
+> JSVAL_TAG_INT32 = JSVAL_TAG_MAX_DOUBLE | JSVAL_TYPE_INT32
+> ```
+>
+> 따라서 위 연산은 다음과 같다.
+> ```cpp
+> return ( uint64_t(0x1FFF1) << 47 ) | payload
+> ```
+> 
+> 검증을 해보면 다음과 같다.
+> ```py
+> >>> hex((0x1FFF1 << 47) | 0x41414141)
+> '0xfff8800041414141L'
+> ```
+>
+> 타입 마스킹 계산 정복!!
 
 # Troubleshooting
 
@@ -528,3 +652,5 @@ sudo apt install autoconf2.13
 | Title | url | tags |
 |---|---|---|
 | Javascript Engine(Spider Monkey) Array OOB Analyzing | [link](https://bpsecblog.wordpress.com/2017/04/27/javascript_engine_array_oob) | `pwn`, `JIT`, `ctf`, `OOB` |
+
+[^type_masking]: 자세한 코드는 `js/public/Value.h`에서 확인 가능하다. (`constexpr uint64_t ValueGCThingPayloadMask = 0x0000'7FFF'FFFF'FFFF;`)
