@@ -31,6 +31,7 @@ Tip note for Firefox analysis & exploitation
 # Firefox note
 
 ## Build
+
 Firefox 소스 코드는 [여기](https://ftp.mozilla.org/pub/firefox/releases/72.0/source/)에서 받을 수 있다. (`ftp.mozilla.org/pub/firefox/releases/version to build/source`)
 
 ```bash
@@ -48,6 +49,7 @@ make
 # Troubleshooting
 
 ## TypeError: cannot create 'NoneType' instances while js/src/configure
+
 ```bash
  nonetype@box  ~/hack/browser/firefox/build  ../firefox-72.0/js/src/configure
 Reexecuting in the virtualenv
@@ -207,11 +209,13 @@ TypeError: cannot create 'NoneType' instances
 [reference](https://bugzilla.mozilla.org/show_bug.cgi?id=1598642): rustc and cargo aren't installed
 
 ### Solution
+
 ```bash
 sudo apt install rustc cargo
 ```
 
 ## ERROR: Cannot find llvm-objdump
+
 ```bash
  nonetype@box  ~/hack/browser/firefox/build  ../firefox-72.0/js/src/configure
 Reexecuting in the virtualenv
@@ -358,11 +362,13 @@ ERROR: Cannot find llvm-objdump
 ```
 
 ### Solution
+
 ```bash
 sudo apt install llvm
 ```
 
 ## ERROR: Could not find autoconf 2.13
+
 ```bash
  nonetype@box  ~/hack/browser/firefox/build  ../firefox-72.0/js/src/configure
 Reexecuting in the virtualenv
@@ -509,11 +515,13 @@ ERROR: Could not find autoconf 2.13
 ```
 
 ### Solution
+
 ```bash
 sudo apt install autoconf2.13
 ```
 
 # References
+
 | Title | url | tags |
 |---|---|---|
 | Javascript Engine(Spider Monkey) Array OOB Analyzing | [link](https://bpsecblog.wordpress.com/2017/04/27/javascript_engine_array_oob) | `pwn`, `JIT`, `ctf`, `OOB` |
