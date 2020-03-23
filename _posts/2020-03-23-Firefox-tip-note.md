@@ -44,7 +44,10 @@ mkdir build-[version]
 cd build-[version]
 ../firefox-[version]/js/src/configure
 make
+./dist/bin/js
 ```
+
+이후 `js> ` 형식의 인터프리터 쉘 창이 뜨면 성공!
 
 # Troubleshooting
 
