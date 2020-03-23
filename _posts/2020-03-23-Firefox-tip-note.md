@@ -517,4 +517,3 @@ sudo apt install autoconf2.13
 | Title | url | tags |
 |---|---|---|
 | Javascript Engine(Spider Monkey) Array OOB Analyzing | [link](https://bpsecblog.wordpress.com/2017/04/27/javascript_engine_array_oob) | `pwn`, `JIT`, `ctf`, `OOB` |
-|  |  |  |
