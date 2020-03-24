@@ -39,6 +39,8 @@ Firefox 소스 코드는 [여기](https://ftp.mozilla.org/pub/firefox/releases/7
 ```bash
 tar -xvf firefox-[version].source.tar.xz
 sudo apt-get install python-pip gcc make g++ perl python autoconf -y
+sudo apt install clang
+sudo apt install nodejs
 sudo apt install rustc cargo
 sudo apt install llvm
 sudo apt install autoconf2.13
@@ -797,6 +799,700 @@ or point at an executable with `CBINDGEN`.
 
 ```bash
 cargo install cbindgen
+```
+
+## ERROR: Could not find clang to generate run bindings for C/C++
+
+```bash
+nonetype@box:~/hack/browser/firefox/build-72.0-debug$ ../firefox-72.0/configure --enable-debug
+Reexecuting in the virtualenv
+checking for vcs source checkout... no
+checking for a shell... /bin/sh
+checking for host system type... x86_64-pc-linux-gnu
+checking for target system type... x86_64-pc-linux-gnu
+checking whether cross compiling... no
+checking for Python 3... /usr/bin/python3 (3.6.9)
+checking for yasm... not found
+checking for the target C compiler... /usr/bin/gcc
+checking whether the target C compiler can be used... yes
+checking the target C compiler version... 7.5.0
+checking the target C compiler works... yes
+checking for the target C++ compiler... /usr/bin/g++
+checking whether the target C++ compiler can be used... yes
+checking the target C++ compiler version... 7.5.0
+checking the target C++ compiler works... yes
+checking for the host C compiler... /usr/bin/gcc
+checking whether the host C compiler can be used... yes
+checking the host C compiler version... 7.5.0
+checking the host C compiler works... yes
+checking for the host C++ compiler... /usr/bin/g++
+checking whether the host C++ compiler can be used... yes
+checking the host C++ compiler version... 7.5.0
+checking the host C++ compiler works... yes
+checking for 64-bit OS... yes
+checking for nasm... not found
+checking for linker... bfd
+checking for the assembler... /usr/bin/gcc
+checking for ar... /usr/bin/ar
+checking for pkg_config... /usr/bin/pkg-config
+checking for pkg-config version... 0.29.1
+checking for stdint.h... yes
+checking for inttypes.h... yes
+checking for malloc.h... yes
+checking for alloca.h... yes
+checking for sys/byteorder.h... no
+checking for getopt.h... yes
+checking for unistd.h... yes
+checking for nl_types.h... yes
+checking for cpuid.h... yes
+checking for sys/statvfs.h... yes
+checking for sys/statfs.h... yes
+checking for sys/vfs.h... yes
+checking for sys/mount.h... yes
+checking for sys/quota.h... yes
+checking for linux/quota.h... yes
+checking for linux/if_addr.h... yes
+checking for linux/rtnetlink.h... yes
+checking for sys/queue.h... yes
+checking for sys/types.h... yes
+checking for netinet/in.h... yes
+checking for byteswap.h... yes
+checking for linux/perf_event.h... yes
+checking for perf_event_open system call... yes
+checking whether the C compiler supports -Wbitfield-enum-conversion... no
+checking whether the C++ compiler supports -Wbitfield-enum-conversion... no
+checking whether the C compiler supports -Wshadow-field-in-constructor-modified... no
++ compiler supports -Wclass-varargs... no
+checking whether the C compiler supports -Wfloat-overflow-conversion... no
+checking whether the C++ compiler supports -Wfloat-overflow-conversion... no
+checking whether the C compiler supports -Wfloat-zero-conversion... no
+checking whether the C++ compiler supports -Wfloat-zero-conversion... no
+checking whether the C compiler supports -Wloop-analysis... no
+checking whether the C++ compiler supports -Wloop-analysis... no
+checking whether the C++ compiler supports -Wc++1z-compat... yes
+checking whether the C++ compiler supports -Wc++2a-compat... no
+checking whether the C++ compiler supports -Wcomma... no
+checking whether the C compiler supports -Wduplicated-cond... yes
+checking whether the C++ compiler supports -Wduplicated-cond... yes
+checking whether the C++ compiler supports -Wimplicit-fallthrough... yes
+checking whether the C compiler supports -Wstring-conversion... no
+checking whether the C++ compiler supports -Wstring-conversion... no
+checking whether the C compiler supports -Wtautological-overlap-compare... no
+checking whether the C++ compiler supports -Wtautological-overlap-compare... no
+checking whether the C compiler supports -Wtautological-unsigned-enum-zero-compare... no
+checking whether the C++ compiler supports -Wtautological-unsigned-enum-zero-compare... no
+checking whether the C compiler supports -Wtautological-unsigned-zero-compare... no
+checking whether the C++ compiler supports -Wtautological-unsigned-zero-compare... no
+checking whether the C compiler supports -Wno-error=tautological-type-limit-compare... no
+checking whether the C++ compiler supports -Wno-error=tautological-type-limit-compare... no
+checking whether the C++ compiler supports -Wno-inline-new-delete... no
+checking whether the C compiler supports -Wno-error=maybe-uninitialized... yes
+checking whether the C++ compiler supports -Wno-error=maybe-uninitialized... yes
+checking whether the C compiler supports -Wno-error=deprecated-declarations... yes
+checking whether the C++ compiler supports -Wno-error=deprecated-declarations... yes
+checking whether the C compiler supports -Wno-error=array-bounds... yes
+checking whether the C++ compiler supports -Wno-error=array-bounds... yes
+checking whether the C compiler supports -Wno-error=coverage-mismatch... yes
+checking whether the C++ compiler supports -Wno-error=coverage-mismatch... yes
+checking whether the C compiler supports -Wno-error=backend-plugin... no
+checking whether the C++ compiler supports -Wno-error=backend-plugin... no
+checking whether the C compiler supports -Wno-error=free-nonheap-object... yes
+checking whether the C++ compiler supports -Wno-error=free-nonheap-object... yes
+checking whether the C compiler supports -Wno-error=multistatement-macros... no
+checking whether the C++ compiler supports -Wno-error=multistatement-macros... no
+checking whether the C compiler supports -Wno-error=return-std-move... no
+checking whether the C++ compiler supports -Wno-error=return-std-move... no
+checking whether the C compiler supports -Wno-error=class-memaccess... no
+checking whether the C++ compiler supports -Wno-error=class-memaccess... no
+checking whether the C compiler supports -Wno-error=atomic-alignment... no
+checking whether the C++ compiler supports -Wno-error=atomic-alignment... no
+checking whether the C compiler supports -Wno-error=deprecated-copy... no
+checking whether the C++ compiler supports -Wno-error=deprecated-copy... no
+checking whether the C compiler supports -Wformat... yes
+checking whether the C++ compiler supports -Wformat... yes
+checking whether the C compiler supports -Wformat-security... yes
+checking whether the C++ compiler supports -Wformat-security... yes
+checking whether the C compiler supports -Wformat-overflow=2... yes
+checking whether the C++ compiler supports -Wformat-overflow=2... yes
+checking whether the C compiler supports -Wno-gnu-zero-variadic-macro-arguments... no
+checking whether the C++ compiler supports -Wno-gnu-zero-variadic-macro-arguments... no
+checking whether the C++ compiler supports -fno-sized-deallocation... yes
+checking whether the C++ compiler supports -fno-aligned-new... yes
+checking for libpulse... yes
+checking MOZ_PULSEAUDIO_CFLAGS... -D_REENTRANT
+checking MOZ_PULSEAUDIO_LIBS... -lpulse
+checking for rustc... /usr/bin/rustc
+checking for cargo... /usr/bin/cargo
+checking rustc version... 1.39.0
+checking cargo version... 1.39.0
+checking for rust target triplet... x86_64-unknown-linux-gnu
+checking for rust host triplet... x86_64-unknown-linux-gnu
+checking for rustdoc... /usr/bin/rustdoc
+checking for cbindgen... /home/nonetype/.cargo/bin/cbindgen
+checking for rustfmt... not found
+checking for clang for bindgen... not found
+checking for libclang for bindgen... not found
+ERROR: Could not find clang to generate run bindings for C/C++. Please install the necessary packages, run `mach bootstrap`, or use --with-clang-path to give the location of clang.
+```
+
+### Solution
+
+```bash
+sudo apt install clang
+```
+
+## ERROR: could not find Node.js executable later than 8.11
+
+```bash
+nonetype@box:~/hack/browser/firefox/build-72.0$ ../firefox-72.0/configure --enable-debug
+Reexecuting in the virtualenv
+checking for vcs source checkout... no
+checking for a shell... /bin/sh
+checking for host system type... x86_64-pc-linux-gnu
+checking for target system type... x86_64-pc-linux-gnu
+checking whether cross compiling... no
+checking for Python 3... /usr/bin/python3 (3.6.9)
+checking for yasm... not found
+checking for the target C compiler... /usr/bin/clang
+checking whether the target C compiler can be used... yes
+checking the target C compiler version... 6.0.0
+checking the target C compiler works... yes
+checking for the target C++ compiler... /usr/bin/clang++
+checking whether the target C++ compiler can be used... yes
+checking the target C++ compiler version... 6.0.0
+checking the target C++ compiler works... yes
+checking for the host C compiler... /usr/bin/clang
+checking whether the host C compiler can be used... yes
+checking the host C compiler version... 6.0.0
+checking the host C compiler works... yes
+checking for the host C++ compiler... /usr/bin/clang++
+checking whether the host C++ compiler can be used... yes
+checking the host C++ compiler version... 6.0.0
+checking the host C++ compiler works... yes
+checking for 64-bit OS... yes
+checking for nasm... not found
+checking for linker... bfd
+checking for the assembler... /usr/bin/clang
+checking for ar... /usr/bin/ar
+checking for pkg_config... /usr/bin/pkg-config
+checking for pkg-config version... 0.29.1
+checking for stdint.h... yes
+checking for inttypes.h... yes
+checking for malloc.h... yes
+checking for alloca.h... yes
+checking for sys/byteorder.h... no
+checking for getopt.h... yes
+checking for unistd.h... yes
+checking for nl_types.h... yes
+checking for cpuid.h... yes
+checking for sys/statvfs.h... yes
+checking for sys/statfs.h... yes
+checking for sys/vfs.h... yes
+checking for sys/mount.h... yes
+checking for sys/quota.h... yes
+checking for linux/quota.h... yes
+checking for linux/if_addr.h... yes
+checking for linux/rtnetlink.h... yes
+checking for sys/queue.h... yes
+checking for sys/types.h... yes
+checking for netinet/in.h... yes
+checking for byteswap.h... yes
+checking for linux/perf_event.h... yes
+checking for perf_event_open system call... yes
+checking whether the C compiler supports -Wbitfield-enum-conversion... yes
+checking whether the C++ compiler supports -Wbitfield-enum-conversion... yes
+checking whether the C compiler supports -Wshadow-field-in-constructor-modified... yes
+checking whether the C++ compiler supports -Wshadow-field-in-constructor-modified... yes
+checking whether the C compiler supports -Wunreachable-code-return... yes
+checking whether the C++ compiler supports -Wunreachable-code-return... yes
+checking whether the C compiler supports -Wclass-varargs... yes
+checking whether the C++ compiler supports -Wclass-varargs... yes
+checking whether the C compiler supports -Wfloat-overflow-conversion... yes
+checking whether the C++ compiler supports -Wfloat-overflow-conversion... yes
+checking whether the C compiler supports -Wfloat-zero-conversion... yes
+checking whether the C++ compiler supports -Wfloat-zero-conversion... yes
+checking whether the C compiler supports -Wloop-analysis... yes
+checking whether the C++ compiler supports -Wloop-analysis... yes
+checking whether the C++ compiler supports -Wc++1z-compat... yes
+checking whether the C++ compiler supports -Wc++2a-compat... yes
+checking whether the C++ compiler supports -Wcomma... yes
+checking whether the C compiler supports -Wduplicated-cond... no
+checking whether the C++ compiler supports -Wduplicated-cond... no
+checking whether the C++ compiler supports -Wimplicit-fallthrough... yes
+checking whether the C compiler supports -Wstring-conversion... yes
+checking whether the C++ compiler supports -Wstring-conversion... yes
+checking whether the C compiler supports -Wtautological-overlap-compare... yes
+checking whether the C++ compiler supports -Wtautological-overlap-compare... yes
+checking whether the C compiler supports -Wtautological-unsigned-enum-zero-compare... yes
+checking whether the C++ compiler supports -Wtautological-unsigned-enum-zero-compare... yes
+checking whether the C compiler supports -Wtautological-unsigned-zero-compare... yes
+checking whether the C++ compiler supports -Wtautological-unsigned-zero-compare... yes
+checking whether the C compiler supports -Wno-error=tautological-type-limit-compare... yes
+checking whether the C++ compiler supports -Wno-error=tautological-type-limit-compare... yes
+checking whether the C++ compiler supports -Wno-inline-new-delete... yes
+checking whether the C compiler supports -Wno-error=maybe-uninitialized... no
+checking whether the C++ compiler supports -Wno-error=maybe-uninitialized... no
+checking whether the C compiler supports -Wno-error=deprecated-declarations... yes
+checking whether the C++ compiler supports -Wno-error=deprecated-declarations... yes
+checking whether the C compiler supports -Wno-error=array-bounds... yes
+checking whether the C++ compiler supports -Wno-error=array-bounds... yes
+checking whether the C compiler supports -Wno-error=coverage-mismatch... no
+checking whether the C++ compiler supports -Wno-error=coverage-mismatch... no
+checking whether the C compiler supports -Wno-error=backend-plugin... yes
+checking whether the C++ compiler supports -Wno-error=backend-plugin... yes
+checking whether the C compiler supports -Wno-error=free-nonheap-object... no
+checking whether the C++ compiler supports -Wno-error=free-nonheap-object... no
+checking whether the C compiler supports -Wno-error=multistatement-macros... no
+checking whether the C++ compiler supports -Wno-error=multistatement-macros... no
+checking whether the C compiler supports -Wno-error=return-std-move... no
+checking whether the C++ compiler supports -Wno-error=return-std-move... no
+checking whether the C compiler supports -Wno-error=class-memaccess... no
+checking whether the C++ compiler supports -Wno-error=class-memaccess... no
+checking whether the C compiler supports -Wno-error=atomic-alignment... no
+checking whether the C++ compiler supports -Wno-error=atomic-alignment... no
+checking whether the C compiler supports -Wno-error=deprecated-copy... no
+checking whether the C++ compiler supports -Wno-error=deprecated-copy... no
+checking whether the C compiler supports -Wformat... yes
+checking whether the C++ compiler supports -Wformat... yes
+checking whether the C compiler supports -Wformat-security... yes
+checking whether the C++ compiler supports -Wformat-security... yes
+checking whether the C compiler supports -Wformat-overflow=2... no
+checking whether the C++ compiler supports -Wformat-overflow=2... no
+checking whether the C compiler supports -Wno-gnu-zero-variadic-macro-arguments... yes
+checking whether the C++ compiler supports -Wno-gnu-zero-variadic-macro-arguments... yes
+checking whether the C++ compiler supports -fno-sized-deallocation... yes
+checking whether the C++ compiler supports -fno-aligned-new... yes
+checking for libpulse... yes
+checking MOZ_PULSEAUDIO_CFLAGS... -D_REENTRANT
+checking MOZ_PULSEAUDIO_LIBS... -lpulse
+checking for rustc... /usr/bin/rustc
+checking for cargo... /usr/bin/cargo
+checking rustc version... 1.39.0
+checking cargo version... 1.39.0
+checking for rust target triplet... x86_64-unknown-linux-gnu
+checking for rust host triplet... x86_64-unknown-linux-gnu
+checking for rustdoc... /usr/bin/rustdoc
+checking for cbindgen... /home/nonetype/.cargo/bin/cbindgen
+checking for rustfmt... not found
+checking for clang for bindgen... /usr/bin/clang++
+checking for libclang for bindgen... /usr/lib/llvm-6.0/lib/libclang.so.1
+checking that libclang is new enough... yes
+checking bindgen cflags... -x c++ -fno-sized-deallocation -fno-aligned-new -DTRACING=1 -DIMPL_LIBXUL -DMOZILLA_INTERNAL_API -DRUST_BINDGEN -DOS_POSIX=1 -DOS_LINUX=1
+checking for llvm_profdata... /usr/bin/llvm-profdata
+checking for nodejs... no
+ERROR: could not find Node.js executable later than 8.11; ensure `node` or `nodejs` is in PATH or set NODEJS in environment to point to an executable.
+
+    Executing `mach bootstrap --no-system-changes` should
+    install a compatible version in ~/.mozbuild on most platforms.
+    If you believe this is a bug, <https://mzl.la/2vLbXAv> is a good way
+    to file.  More details: <https://bit.ly/2BbyD1E>
+```
+
+### Solution
+
+`nodejs` 버전이 낮아서 생기는 문제다.
+
+Ubuntu18.04 기준, `apt install nodejs` 명령을 통해 받는 버전은 8.10이므로 아래 명령을 통해 최신 버전의 nodejs를 설치하면 된다. (작성일 기준 최신 nodejs 버전: 12.16.1 LTS)
+
+```bash
+curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
+sudo apt-get install -y nodejs
+```
+
+아래와 같이 버전을 확인할 수 있다.
+
+```bash
+nonetype@box:~/hack/browser/firefox$ nodejs -v
+v12.16.1
+nonetype@box:~/hack/browser/firefox$
+```
+
+## ERROR: nasm 2.13 or greater is required for AV1 support
+
+```bash
+nonetype@box:~/hack/browser/firefox/build-72.0-debug$ ../firefox-72.0/configure --enable-debug
+Reexecuting in the virtualenv
+checking for vcs source checkout... no
+checking for a shell... /bin/sh
+checking for host system type... x86_64-pc-linux-gnu
+checking for target system type... x86_64-pc-linux-gnu
+checking whether cross compiling... no
+checking for Python 3... /usr/bin/python3 (3.6.9)
+checking for yasm... not found
+checking for the target C compiler... /usr/bin/clang
+checking whether the target C compiler can be used... yes
+checking the target C compiler version... 6.0.0checking the target C compiler works... yeschecking for the target C++ compiler... /usr/bin/clang++
+checking whether the target C++ compiler can be used... yes
+checking the target C++ compiler version... 6.0.0
+checking the target C++ compiler works... yeschecking for the host C compiler... /usr/bin/clang
+checking whether the host C compiler can be used... yes
+checking the host C compiler version... 6.0.0
+checking the host C compiler works... yes
+checking for the host C++ compiler... /usr/bin/clang++
+checking whether the host C++ compiler can be used... yes
+checking the host C++ compiler version... 6.0.0
+checking the host C++ compiler works... yes
+checking for 64-bit OS... yes
+checking for nasm... not found
+checking for linker... bfd
+checking for the assembler... /usr/bin/clang
+checking for ar... /usr/bin/ar
+checking for pkg_config... /usr/bin/pkg-config
+checking for pkg-config version... 0.29.1
+checking for stdint.h... yes
+checking for inttypes.h... yes
+checking for malloc.h... yes
+checking for alloca.h... yes
+checking for sys/byteorder.h... no
+checking for getopt.h... yes
+checking for unistd.h... yes
+checking for nl_types.h... yes
+checking for cpuid.h... yes
+checking for sys/statvfs.h... yes
+checking for sys/statfs.h... yes
+checking for sys/vfs.h... yes
+checking for sys/mount.h... yes
+checking for sys/quota.h... yes
+checking for linux/quota.h... yes
+checking for linux/if_addr.h... yes
+checking for linux/rtnetlink.h... yes
+checking for sys/queue.h... yes
+checking for sys/types.h... yes
+checking for netinet/in.h... yes
+checking for byteswap.h... yes
+checking for linux/perf_event.h... yes
+checking for perf_event_open system call... yes
+checking whether the C compiler supports -Wbitfield-enum-conversion... yes
+checking whether the C++ compiler supports -Wbitfield-enum-conversion... yes
+checking whether the C compiler supports -Wshadow-field-in-constructor-modified... yes
+checking whether the C++ compiler supports -Wshadow-field-in-constructor-modified... yes
+checking whether the C compiler supports -Wunreachable-code-return... yes
+checking whether the C++ compiler supports -Wunreachable-code-return... yes
+checking whether the C compiler supports -Wclass-varargs... yes
+checking whether the C++ compiler supports -Wclass-varargs... yes
+checking whether the C compiler supports -Wfloat-overflow-conversion... yes
+checking whether the C++ compiler supports -Wfloat-overflow-conversion... yes
+checking whether the C compiler supports -Wfloat-zero-conversion... yes
+checking whether the C++ compiler supports -Wfloat-zero-conversion... yes
+checking whether the C compiler supports -Wloop-analysis... yes
+checking whether the C++ compiler supports -Wloop-analysis... yes
+checking whether the C++ compiler supports -Wc++1z-compat... yes
+checking whether the C++ compiler supports -Wc++2a-compat... yes
+checking whether the C++ compiler supports -Wcomma... yes
+checking whether the C compiler supports -Wduplicated-cond... no
+checking whether the C++ compiler supports -Wduplicated-cond... no
+checking whether the C++ compiler supports -Wimplicit-fallthrough... yes
+checking whether the C compiler supports -Wstring-conversion... yes
+checking whether the C++ compiler supports -Wstring-conversion... yes
+checking whether the C compiler supports -Wtautological-overlap-compare... yes
+checking whether the C++ compiler supports -Wtautological-overlap-compare... yes
+checking whether the C compiler supports -Wtautological-unsigned-enum-zero-compare... yes
+checking whether the C++ compiler supports -Wtautological-unsigned-enum-zero-compare... yes
+checking whether the C compiler supports -Wtautological-unsigned-zero-compare... yes
+checking whether the C++ compiler supports -Wtautological-unsigned-zero-compare... yes
+checking whether the C compiler supports -Wno-error=tautological-type-limit-compare... yes
+checking whether the C++ compiler supports -Wno-error=tautological-type-limit-compare... yes
+checking whether the C++ compiler supports -Wno-inline-new-delete... yes
+checking whether the C compiler supports -Wno-error=maybe-uninitialized... no
+checking whether the C++ compiler supports -Wno-error=maybe-uninitialized... no
+checking whether the C compiler supports -Wno-error=deprecated-declarations... yes
+checking whether the C++ compiler supports -Wno-error=deprecated-declarations... yes
+checking whether the C compiler supports -Wno-error=array-bounds... yes
+checking whether the C++ compiler supports -Wno-error=array-bounds... yes
+checking whether the C compiler supports -Wno-error=coverage-mismatch... no
+checking whether the C++ compiler supports -Wno-error=coverage-mismatch... no
+checking whether the C compiler supports -Wno-error=backend-plugin... yes
+checking whether the C++ compiler supports -Wno-error=backend-plugin... yes
+checking whether the C compiler supports -Wno-error=free-nonheap-object... no
+checking whether the C++ compiler supports -Wno-error=free-nonheap-object... no
+checking whether the C compiler supports -Wno-error=multistatement-macros... no
+checking whether the C++ compiler supports -Wno-error=multistatement-macros... no
+checking whether the C compiler supports -Wno-error=return-std-move... no
+checking whether the C++ compiler supports -Wno-error=return-std-move... no
+checking whether the C compiler supports -Wno-error=class-memaccess... no
+checking whether the C++ compiler supports -Wno-error=class-memaccess... no
+checking whether the C compiler supports -Wno-error=atomic-alignment... no
+checking whether the C++ compiler supports -Wno-error=atomic-alignment... no
+checking whether the C compiler supports -Wno-error=deprecated-copy... no
+checking whether the C++ compiler supports -Wno-error=deprecated-copy... no
+checking whether the C compiler supports -Wformat... yes
+checking whether the C++ compiler supports -Wformat... yes
+checking whether the C compiler supports -Wformat-security... yes
+checking whether the C++ compiler supports -Wformat-security... yes
+checking whether the C compiler supports -Wformat-overflow=2... no
+checking whether the C++ compiler supports -Wformat-overflow=2... no
+checking whether the C compiler supports -Wno-gnu-zero-variadic-macro-arguments... yes
+checking whether the C++ compiler supports -Wno-gnu-zero-variadic-macro-arguments... yes
+checking whether the C++ compiler supports -fno-sized-deallocation... yes
+checking whether the C++ compiler supports -fno-aligned-new... yes
+checking for libpulse... yes
+checking MOZ_PULSEAUDIO_CFLAGS... -D_REENTRANT
+checking MOZ_PULSEAUDIO_LIBS... -lpulse
+checking for rustc... /usr/bin/rustc
+checking for cargo... /usr/bin/cargo
+checking rustc version... 1.39.0
+checking cargo version... 1.39.0
+checking for rust target triplet... x86_64-unknown-linux-gnu
+checking for rust host triplet... x86_64-unknown-linux-gnu
+checking for rustdoc... /usr/bin/rustdoc
+checking for cbindgen... /home/nonetype/.cargo/bin/cbindgen
+checking for rustfmt... not found
+checking for clang for bindgen... /usr/bin/clang++
+checking for libclang for bindgen... /usr/lib/llvm-6.0/lib/libclang.so.1
+checking that libclang is new enough... yes
+checking bindgen cflags... -x c++ -fno-sized-deallocation -fno-aligned-new -DTRACING=1 -DIMPL_LIBXUL -DMOZILLA_INTERNAL_API -DRUST_BINDGEN -DOS_POSIX=1 -DOS_LINUX=1
+checking for llvm_profdata... /usr/bin/llvm-profdata
+checking for nodejs... /usr/bin/nodejs (12.16.1)
+checking for gtk+-wayland-3.0 >= 3.10 xkbcommon >= 0.4.1 libdrm >= 2.4... yes
+checking MOZ_WAYLAND_CFLAGS... -pthread -I/usr/include/gtk-3.0 -I/usr/include/at-spi2-atk/2.0 -I/usr/include/at-spi-2.0 -I/usr/include/dbus-1.0 -I/usr/lib/x86_64-linux-gnu/dbus-1.0/include -I/usr/include/gtk-3.0 -I/usr/include/gio-unix-2.
+0/ -I/usr/include/cairo -I/usr/include/pango-1.0 -I/usr/include/harfbuzz -I/usr/include/pango-1.0 -I/usr/include/atk-1.0 -I/usr/include/cairo -I/usr/include/pixman-1 -I/usr/include/freetype2 -I/usr/include/libpng16 -I/usr/include/freetype
+2 -I/usr/include/libpng16 -I/usr/include/gdk-pixbuf-2.0 -I/usr/include/libpng16 -I/usr/include/glib-2.0 -I/usr/lib/x86_64-linux-gnu/glib-2.0/include -I/usr/include/libdrm
+checking MOZ_WAYLAND_LIBS... -lgtk-3 -lgdk-3 -lpangocairo-1.0 -lpango-1.0 -latk-1.0 -lcairo-gobject -lcairo -lgdk_pixbuf-2.0 -lgio-2.0 -lgobject-2.0 -lglib-2.0 -lxkbcommon -ldrm
+checking for pango >= 1.22.0 pangoft2 >= 1.22.0 pangocairo >= 1.22.0... yes
+checking MOZ_PANGO_CFLAGS... -I/usr/include/pango-1.0 -I/usr/include/harfbuzz -I/usr/include/pango-1.0 -I/usr/include/cairo -I/usr/include/glib-2.0 -I/usr/lib/x86_64-linux-gnu/glib-2.0/include -I/usr/include/pixman-1 -I/usr/include/freety
+pe2 -I/usr/include/libpng16 -I/usr/include/freetype2 -I/usr/include/libpng16
+checking MOZ_PANGO_LIBS... -lpangoft2-1.0 -lfontconfig -lfreetype -lpangocairo-1.0 -lpango-1.0 -lgobject-2.0 -lglib-2.0 -lcairo
+checking for fontconfig >= 2.7.0... yes
+checking _FONTCONFIG_CFLAGS... -I/usr/include/freetype2 -I/usr/include/libpng16 -I/usr/include/freetype2 -I/usr/include/libpng16
+checking _FONTCONFIG_LIBS... -lfontconfig -lfreetype
+checking for freetype2 >= 6.1.0... yes
+checking _FT2_CFLAGS... -I/usr/include/freetype2 -I/usr/include/libpng16
+checking _FT2_LIBS... -lfreetype
+ERROR: nasm 2.13 or greater is required for AV1 support. Either install nasm or add --disable-av1 to your configure options.
+```
+
+### Solution
+내 경우에는 `nasm`이 설치되어 있지 않아 발생하는 문제였다.
+
+```bash
+nonetype@box:~/hack/browser/firefox/build-72.0-debug$ nasm -v
+
+Command 'nasm' not found, but can be installed with:
+
+sudo apt install nasm
+```
+
+아래 명령을 통해 `nasm`을 설치하면 해결된다.
+
+```bash
+sudo apt install nasm
+```
+
+## ERROR: Yasm is required to build with ffvpx, jpeg, libav and vpx
+
+```bash
+nonetype@box:~/hack/browser/firefox/build-72.0-debug$ ../firefox-72.0/configure --enable-debug
+Reexecuting in the virtualenv
+checking for vcs source checkout... no
+checking for a shell... /bin/sh
+checking for host system type... x86_64-pc-linux-gnu
+checking for target system type... x86_64-pc-linux-gnu
+checking whether cross compiling... no
+checking for Python 3... /usr/bin/python3 (3.6.9)
+checking for yasm... not found
+checking for the target C compiler... /usr/bin/clang
+checking whether the target C compiler can be used... yes
+checking the target C compiler version... 6.0.0
+checking the target C compiler works... yes
+checking for the target C++ compiler... /usr/bin/clang++
+checking whether the target C++ compiler can be used... yes
+checking the target C++ compiler version... 6.0.0
+checking the target C++ compiler works... yes
+checking for the host C compiler... /usr/bin/clang
+checking whether the host C compiler can be used... yes
+checking the host C compiler version... 6.0.0
+checking the host C compiler works... yes
+checking for the host C++ compiler... /usr/bin/clang++
+checking whether the host C++ compiler can be used... yes
+checking the host C++ compiler version... 6.0.0
+checking the host C++ compiler works... yes
+checking for 64-bit OS... yes
+checking for nasm... /usr/bin/nasm
+checking nasm version... 2.13.02
+checking for linker... bfd
+checking for the assembler... /usr/bin/clang
+checking for ar... /usr/bin/ar
+checking for pkg_config... /usr/bin/pkg-config
+checking for pkg-config version... 0.29.1
+checking for stdint.h... yes
+checking for inttypes.h... yes
+checking for malloc.h... yes
+checking for alloca.h... yes
+checking for sys/byteorder.h... no
+checking for getopt.h... yes
+checking for unistd.h... yes
+checking for nl_types.h... yes
+checking for cpuid.h... yes
+checking for sys/statvfs.h... yes
+checking for sys/statfs.h... yes
+checking for sys/vfs.h... yes
+checking for sys/mount.h... yes
+checking for sys/quota.h... yes
+checking for linux/quota.h... yes
+checking for linux/if_addr.h... yes
+checking for linux/rtnetlink.h... yes
+checking for sys/queue.h... yes
+checking for sys/types.h... yes
+checking for netinet/in.h... yes
+checking for byteswap.h... yes
+checking for linux/perf_event.h... yes
+checking for perf_event_open system call... yes
+checking whether the C compiler supports -Wbitfield-enum-conversion... yes
+checking whether the C++ compiler supports -Wbitfield-enum-conversion... yes
+checking whether the C compiler supports -Wshadow-field-in-constructor-modified... yes
+checking whether the C++ compiler supports -Wshadow-field-in-constructor-modified... yes
+checking whether the C compiler supports -Wunreachable-code-return... yes
+checking whether the C++ compiler supports -Wunreachable-code-return... yes
+checking whether the C compiler supports -Wclass-varargs... yes
+checking whether the C++ compiler supports -Wclass-varargs... yes
+checking whether the C compiler supports -Wfloat-overflow-conversion... yes
+checking whether the C++ compiler supports -Wfloat-overflow-conversion... yes
+checking whether the C compiler supports -Wfloat-zero-conversion... yes
+checking whether the C++ compiler supports -Wfloat-zero-conversion... yes
+checking whether the C compiler supports -Wloop-analysis... yes
+checking whether the C++ compiler supports -Wloop-analysis... yes
+checking whether the C++ compiler supports -Wc++1z-compat... yes
+checking whether the C++ compiler supports -Wc++2a-compat... yes
+checking whether the C++ compiler supports -Wcomma... yes
+checking whether the C compiler supports -Wduplicated-cond... no
+checking whether the C++ compiler supports -Wduplicated-cond... no
+checking whether the C++ compiler supports -Wimplicit-fallthrough... yes
+checking whether the C compiler supports -Wstring-conversion... yes
+checking whether the C++ compiler supports -Wstring-conversion... yes
+checking whether the C compiler supports -Wtautological-overlap-compare... yes
+checking whether the C++ compiler supports -Wtautological-overlap-compare... yes
+checking whether the C compiler supports -Wtautological-unsigned-enum-zero-compare... yes
+checking whether the C++ compiler supports -Wtautological-unsigned-enum-zero-compare... yes
+checking whether the C compiler supports -Wtautological-unsigned-zero-compare... yes
+checking whether the C++ compiler supports -Wtautological-unsigned-zero-compare... yes
+checking whether the C compiler supports -Wno-error=tautological-type-limit-compare... yes
+checking whether the C++ compiler supports -Wno-error=tautological-type-limit-compare... yes
+checking whether the C++ compiler supports -Wno-inline-new-delete... yes
+checking whether the C compiler supports -Wno-error=maybe-uninitialized... no
+checking whether the C++ compiler supports -Wno-error=maybe-uninitialized... no
+checking whether the C compiler supports -Wno-error=deprecated-declarations... yes
+checking whether the C++ compiler supports -Wno-error=deprecated-declarations... yes
+checking whether the C compiler supports -Wno-error=array-bounds... yes
+checking whether the C++ compiler supports -Wno-error=array-bounds... yes
+checking whether the C compiler supports -Wno-error=coverage-mismatch... no
+checking whether the C++ compiler supports -Wno-error=coverage-mismatch... no
+checking whether the C compiler supports -Wno-error=backend-plugin... yes
+checking whether the C++ compiler supports -Wno-error=backend-plugin... yes
+checking whether the C compiler supports -Wno-error=free-nonheap-object... no
+checking whether the C++ compiler supports -Wno-error=free-nonheap-object... no
+checking whether the C compiler supports -Wno-error=multistatement-macros... no
+checking whether the C++ compiler supports -Wno-error=multistatement-macros... no
+checking whether the C compiler supports -Wno-error=return-std-move... no
+checking whether the C++ compiler supports -Wno-error=return-std-move... no
+checking whether the C compiler supports -Wno-error=class-memaccess... no
+checking whether the C++ compiler supports -Wno-error=class-memaccess... no
+checking whether the C compiler supports -Wno-error=atomic-alignment... no
+checking whether the C++ compiler supports -Wno-error=atomic-alignment... no
+checking whether the C compiler supports -Wno-error=deprecated-copy... no
+checking whether the C++ compiler supports -Wno-error=deprecated-copy... no
+checking whether the C compiler supports -Wformat... yes
+checking whether the C++ compiler supports -Wformat... yes
+checking whether the C compiler supports -Wformat-security... yes
+checking whether the C++ compiler supports -Wformat-security... yes
+checking whether the C compiler supports -Wformat-overflow=2... no
+checking whether the C++ compiler supports -Wformat-overflow=2... no
+checking whether the C compiler supports -Wno-gnu-zero-variadic-macro-arguments... yes
+checking whether the C++ compiler supports -Wno-gnu-zero-variadic-macro-arguments... yes
+checking whether the C++ compiler supports -fno-sized-deallocation... yes
+checking whether the C++ compiler supports -fno-aligned-new... yes
+checking for libpulse... yes
+checking MOZ_PULSEAUDIO_CFLAGS... -D_REENTRANT
+checking MOZ_PULSEAUDIO_LIBS... -lpulse
+checking for rustc... /usr/bin/rustc
+checking for cargo... /usr/bin/cargo
+checking rustc version... 1.39.0
+checking cargo version... 1.39.0
+checking for rust target triplet... x86_64-unknown-linux-gnu
+checking for rust host triplet... x86_64-unknown-linux-gnu
+checking for rustdoc... /usr/bin/rustdoc
+checking for cbindgen... /home/nonetype/.cargo/bin/cbindgen
+checking for rustfmt... not found
+checking for clang for bindgen... /usr/bin/clang++
+checking for libclang for bindgen... /usr/lib/llvm-6.0/lib/libclang.so.1
+checking that libclang is new enough... yes
+checking bindgen cflags... -x c++ -fno-sized-deallocation -fno-aligned-new -DTRACING=1 -DIMPL_LIBXUL -DMOZILLA_INTERNAL_API -DRUST_BINDGEN -DOS_POSIX=1 -DOS_LINUX=1
+checking for llvm_profdata... /usr/bin/llvm-profdata
+checking for nodejs... /usr/bin/nodejs (12.16.1)
+checking for gtk+-wayland-3.0 >= 3.10 xkbcommon >= 0.4.1 libdrm >= 2.4... yes
+checking MOZ_WAYLAND_CFLAGS... -pthread -I/usr/include/gtk-3.0 -I/usr/include/at-spi2-atk/2.0 -I/usr/include/at-spi-2.0 -I/usr/include/dbus-1.0 -I/usr/lib/x86_64-linux-gnu/dbus-1.0/include -I/usr/include/gtk-3.0 -I/usr/include/gio-unix-2.0/ -I/usr/include/cairo -I/usr/include/pango-1.0 -I/usr/include/harfbuzz -I/usr/include/pango-1.0 -I/usr/include/atk-1.0 -I/usr/include/cairo -I/usr/include/pixman-1 -I/usr/include/freetype2 -I/usr/include/libpng16 -I/usr/include/freetype2 -I/usr/include/libpng16 -I/usr/include/gdk-pixbuf-2.0 -I/usr/include/libpng16 -I/usr/include/glib-2.0 -I/usr/lib/x86_64-linux-gnu/glib-2.0/include -I/usr/include/libdrm
+checking MOZ_WAYLAND_LIBS... -lgtk-3 -lgdk-3 -lpangocairo-1.0 -lpango-1.0 -latk-1.0 -lcairo-gobject -lcairo -lgdk_pixbuf-2.0 -lgio-2.0 -lgobject-2.0 -lglib-2.0 -lxkbcommon -ldrm
+checking for pango >= 1.22.0 pangoft2 >= 1.22.0 pangocairo >= 1.22.0... yes
+checking MOZ_PANGO_CFLAGS... -I/usr/include/pango-1.0 -I/usr/include/harfbuzz -I/usr/include/pango-1.0 -I/usr/include/cairo -I/usr/include/glib-2.0 -I/usr/lib/x86_64-linux-gnu/glib-2.0/include -I/usr/include/pixman-1 -I/usr/include/freetype2 -I/usr/include/libpng16 -I/usr/include/freetype2 -I/usr/include/libpng16
+checking MOZ_PANGO_LIBS... -lpangoft2-1.0 -lfontconfig -lfreetype -lpangocairo-1.0 -lpango-1.0 -lgobject-2.0 -lglib-2.0 -lcairo
+checking for fontconfig >= 2.7.0... yes
+checking _FONTCONFIG_CFLAGS... -I/usr/include/freetype2 -I/usr/include/libpng16 -I/usr/include/freetype2 -I/usr/include/libpng16
+checking _FONTCONFIG_LIBS... -lfontconfig -lfreetype
+checking for freetype2 >= 6.1.0... yes
+checking _FT2_CFLAGS... -I/usr/include/freetype2 -I/usr/include/libpng16
+checking _FT2_LIBS... -lfreetype
+checking for tar... /bin/tar
+checking for unzip... /usr/bin/unzip
+checking for zip... /usr/bin/zip
+checking for gn... not found
+checking for the Mozilla API key... no
+checking for the Google Location Service API key... no
+checking for the Google Safebrowsing API key... no
+checking for the Bing API key... no
+checking for the Adjust SDK key... no
+checking for the Leanplum SDK key... no
+checking for the Pocket API key... no
+ERROR: Yasm is required to build with ffvpx, jpeg, libav and vpx, but you do not appear to have Yasm installed.
+```
+
+### Solution
+
+```bash
+sudo apt install yasm
+```
+
+## configure: error: Library requirements
+
+```bash
+nonetype@box:~/hack/browser/firefox/build-72.0-debug$ ../firefox-72.0/configure --enable-debug
+Reexecuting in the virtualenv
+checking for vcs source checkout... no
+checking for a shell... /bin/sh
+...
+...
+checking MOZ_GTK3_CFLAGS... -pthread -I/usr/include/gtk-3.0/unix-print -I/usr/include/gtk-3.0 -I/usr/include/at-spi2-atk/2.0 -I/usr/include/at-spi-2.0 -I/usr/include/dbus-1.0 -I/usr/lib/x86_64-linux-gnu/dbus-1.0/include -I/usr/include/gtk-3.0 -I/usr/include/cairo -I/usr/include/pango-1.0 -I/usr/include/harfbuzz -I/usr/include/pango-1.0 -I/usr/include/atk-1.0 -I/usr/include/cairo -I/usr/include/pixman-1 -I/usr/include/freetype2 -I/usr/include/libpng16 -I/usr/include/freetype2 -I/usr/include/libpng16 -I/usr/include/gdk-pixbuf-2.0 -I/usr/include/libpng16 -I/usr/include/gio-unix-2.0/ -I/usr/include/glib-2.0 -I/usr/lib/x86_64-linux-gnu/glib-2.0/include
+checking MOZ_GTK3_LIBS... -lgtk-3 -lgdk-3 -lpangocairo-1.0 -lpango-1.0 -latk-1.0 -lcairo-gobject -lcairo -lgdk_pixbuf-2.0 -lgio-2.0 -lgobject-2.0 -lglib-2.0
+checking for gtk+-2.0 >= 2.18.0 gtk+-unix-print-2.0 glib-2.0 >= 2.22 gobject-2.0 gio-unix-2.0 gdk-x11-2.0... Package gtk+-2.0 was not found in the pkg-config search path. Perhaps you should add the directory containing 'gtk+-2.0.pc' to the PKG_CONFIG_PATH environment variable No package 'gtk+-2.0' found Package gtk+-unix-print-2.0 was not found in the pkg-config search path. Perhaps you should add the directory containing 'gtk+-unix-print-2.0.pc' to the PKG_CONFIG_PATH environment variable No package 'gtk+-unix-print-2.0' found Package gdk-x11-2.0 was not found in the pkg-config search path. Perhaps you should add the directory containing 'gdk-x11-2.0.pc' to the PKG_CONFIG_PATH environment variable No package 'gdk-x11-2.0' found
+configure: error: Library requirements (gtk+-2.0 >= 2.18.0 gtk+-unix-print-2.0 glib-2.0 >= 2.22 gobject-2.0 gio-unix-2.0 gdk-x11-2.0) not met; consider adjusting the PKG_CONFIG_PATH environment variable if your libraries are in a nonstandard prefix so pkg-config can find them.
+DEBUG: <truncated - see config.log for full output>
+DEBUG: 1 error generated.
+DEBUG: configure: failed program was:
+DEBUG: #line 7699 "configure"
+DEBUG: #include "confdefs.h"
+DEBUG: #include <malloc.h>
+DEBUG:                   #include <stddef.h>
+DEBUG:                   size_t malloc_usable_size(const void *ptr);
+DEBUG: int main() {
+DEBUG: return malloc_usable_size(0);
+DEBUG: ; return 0; }
+DEBUG: configure:7730: checking for valloc in malloc.h
+DEBUG: configure:7755: checking for valloc in unistd.h
+DEBUG: configure:7780: checking for _aligned_malloc in malloc.h
+DEBUG: configure:7918: checking NSPR selection
+DEBUG: configure:8849: checking if app-specific confvars.sh exists
+DEBUG: configure:9030: checking for gtk+-3.0 >= 3.4.0 gtk+-unix-print-3.0 glib-2.0 gobject-2.0 gio-unix-2.0
+DEBUG: configure:9037: checking MOZ_GTK3_CFLAGS
+DEBUG: configure:9042: checking MOZ_GTK3_LIBS
+DEBUG: configure:9113: checking for gtk+-2.0 >= 2.18.0 gtk+-unix-print-2.0 glib-2.0 >= 2.22 gobject-2.0 gio-unix-2.0 gdk-x11-2.0
+DEBUG: configure: error: Library requirements (gtk+-2.0 >= 2.18.0 gtk+-unix-print-2.0 glib-2.0 >= 2.22 gobject-2.0 gio-unix-2.0 gdk-x11-2.0) not met; consider adjusting the PKG_CONFIG_PATH environment variable if your libraries are in a nonstandard prefix so pkg-config can find them.
+ERROR: old-configure failed
+```
+
+### Solution
+
+`sudo apt (update/upgrade)` 후에도 이 문제가 해결되지 않는 경우가 있는데, 아래 라이브러리를 설치하면 해결된다.
+
+```bash
+apt-get install libgtk2.0-dev
 ```
 
 # References
