@@ -26,6 +26,18 @@ Tip note for Firefox analysis & exploitation
     - [Solution](#solution-1)
   - [ERROR: Could not find autoconf 2.13](#error-could-not-find-autoconf-213)
     - [Solution](#solution-2)
+  - [ERROR: Cannot find cbindgen.](#error-cannot-find-cbindgen)
+    - [Solution](#solution-3)
+  - [ERROR: Could not find clang to generate run bindings for C/C++](#error-could-not-find-clang-to-generate-run-bindings-for-cc)
+    - [Solution](#solution-4)
+  - [ERROR: could not find Node.js executable later than 8.11](#error-could-not-find-nodejs-executable-later-than-811)
+    - [Solution](#solution-5)
+  - [ERROR: nasm 2.13 or greater is required for AV1 support](#error-nasm-213-or-greater-is-required-for-av1-support)
+    - [Solution](#solution-6)
+  - [ERROR: Yasm is required to build with ffvpx, jpeg, libav and vpx](#error-yasm-is-required-to-build-with-ffvpx-jpeg-libav-and-vpx)
+    - [Solution](#solution-7)
+  - [configure: error: Library requirements](#configure-error-library-requirements)
+    - [Solution](#solution-8)
 - [References](#references)
 
 <!-- /code_chunk_output -->
@@ -38,12 +50,7 @@ Firefox 소스 코드는 [여기](https://ftp.mozilla.org/pub/firefox/releases/7
 
 ```bash
 tar -xvf firefox-[version].source.tar.xz
-sudo apt-get install python-pip gcc make g++ perl python autoconf -y
-sudo apt install clang
-sudo apt install nodejs
-sudo apt install rustc cargo
-sudo apt install llvm
-sudo apt install autoconf2.13
+sudo apt-get install nasm yasm clang nodejs rustc cargo llvm python-pip gcc make g++ perl python autoconf autoconf2.13 libgtk2.0-dev -y
 mkdir build-[version]
 cd build-[version]
 ../firefox-[version]/js/src/configure --enable-debug
