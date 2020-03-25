@@ -58,6 +58,19 @@ make
 ./dist/bin/js
 ```
 
+혹은 아래와 같이 `gecko-dev` Repo를 통해 빌드할 수 있다.
+
+```bash
+git clone https://github.com/mozilla/gecko-dev.git
+cd gecko-dev
+git checkout [commit number]
+cd js/src
+mkdir build.asserts
+cd build.asserts
+/bin/sh ../configure.in --enable-debug
+make
+```
+
 이후 `js> ` 형식의 인터프리터 쉘 창이 뜨면 성공!
 
 ## Debug Array object
@@ -1507,5 +1520,7 @@ apt-get install libgtk2.0-dev
 | Title | url | tags |
 |---|---|---|
 | Javascript Engine(Spider Monkey) Array OOB Analyzing | [link](https://bpsecblog.wordpress.com/2017/04/27/javascript_engine_array_oob) | `pwn`, `JIT`, `ctf`, `OOB` |
+| Attacking Client-Side JIT Compilers (v2) | [link](https://saelo.github.io/presentations/blackhat_us_18_attacking_client_side_jit_compilers.pdf) | `rev`, `pwn`, `JIT`, `pdf`, `depth` |
+| Introduction to SpiderMonkey exploitation | [link](https://doar-e.github.io/blog/2018/11/19/introduction-to-spidermonkey-exploitation/) | `rev`, `pwn`, `basic`, `JIT`, `ctf`, `OOB` |
 
 [^type_masking]: 자세한 코드는 `js/public/Value.h`에서 확인 가능하다. (`constexpr uint64_t ValueGCThingPayloadMask = 0x0000'7FFF'FFFF'FFFF;`)
