@@ -19,6 +19,8 @@ Tip note for Firefox analysis & exploitation
   - [Build](#build)
   - [Debug Array object](#debug-array-object)
     - [Understand Type Masking](#understand-type-masking)
+  - [Shape Debugging](#shape-debugging)
+  - [What's 0xe5e5e5e5e5e5e5e5 ???](#whats-0xe5e5e5e5e5e5e5e5)
 - [Troubleshooting](#troubleshooting)
   - [TypeError: cannot create 'NoneType' instances while js/src/configure](#typeerror-cannot-create-nonetype-instances-while-jssrcconfigure)
     - [Solution](#solution)
@@ -194,6 +196,159 @@ Array의 인자로 넣었던 `0x41414141`, `0x42424242`, `0x43434343`과 `array.
 > ```
 >
 > 타입 마스킹 계산 정복!!
+
+## Shape Debugging
+JSObject 관리는 properties와 shapes로 나누어 관리된다. (자세한 내용은 더 공부해봐야함)
+여기서, 객체가 가지고 있는 속성을 표현하는 shapes를 디버깅하는 방법을 더듬더듬 짚어나가보자.
+
+먼저 아래와 같은 코드를 작성해봤다.
+
+**object.js**
+```js
+var o = {
+        x: 0x41,
+        y: 0x42
+};
+Math.atan(o);
+
+o.z = 0x43;
+Math.atan(o);
+
+o[0] = 0x1337;
+o[1] = 0x1338;
+Math.atan(o);
+
+o.a = 0x44;
+Math.atan(o);
+```
+
+이후 아래와 같이 디버깅을 진행한다.
+
+```cpp
+nonetype@box:~/hack/browser/firefox/CVE-2019-9791/gecko-release/dist/bin$ lldb js
+(lldb) target create "js"
+Current executable set to 'js' (x86_64).
+(lldb) b js::math_atan
+Breakpoint 1: where = js`js::math_atan(JSContext*, unsigned int, JS::Value*) + 9 [inlined] bool math_function<&(js::math_atan_impl(double))>(JSContext*, unsigned int, JS::Value*) at jsmath.cpp:149, address = 0x0000000000bebae9
+(lldb) r object.js
+Process 5798 launched: '/home/nonetype/hack/browser/firefox/CVE-2019-9791/gecko-release/dist/bin/js' (x86_64)
+Process 5798 stopped
+* thread #1, name = 'js', stop reason = breakpoint 1.1
+    frame #0: 0x000055555613fae9 js`js::math_atan(JSContext*, unsigned int, JS::Value*) [inlined] bool math_function<&(js::math_atan_impl(double))>(cx=0x00007ffff5b16000, argc=1, vp=0x00007ffff56f60a0) at jsmath.cpp:90
+   87   template <UnaryMathFunctionType F>
+   88   static bool math_function(JSContext* cx, unsigned argc, Value* vp) {
+   89     CallArgs args = CallArgsFromVp(argc, vp);
+-> 90     if (args.length() == 0) {
+   91       args.rval().setNaN();
+   92       return true;
+   93     }
+(lldb) x/3gx vp
+0x7ffff56f60a0: 0xfffe00aee62aa4c0 0xfffe00aee6283180
+0x7ffff56f60b0: 0xfffe00aee62811c0
+(lldb) p *(JSObject*)0x00aee62811c0
+(JSObject) $1 = {
+  group_ = {
+    js::WriteBarrieredBase<js::ObjectGroup *> = {
+      js::BarrieredBase<js::ObjectGroup *> = {
+        value = 0x000000aee627d2b0
+      }
+    }
+  }
+  shapeOrExpando_ = 0x000000aee62ab0b0
+}
+(lldb) p *(Shape*)$1.shapeOrExpando_
+(js::Shape) $2 = {
+  base_ = {
+    js::WriteBarrieredBase<js::BaseShape *> = {
+      js::BarrieredBase<js::BaseShape *> = {
+        value = 0x000000aee627e0e0
+      }
+    }
+  }
+  propid_ = {
+    js::WriteBarrieredBase<JS::PropertyKey> = {
+      js::BarrieredBase<JS::PropertyKey> = {
+        value = (asBits = 751185170272)
+      }
+    }
+  }
+  immutableFlags = 33554433
+  attrs = '\x01'
+  mutableFlags = '\0'
+  parent = {
+    js::WriteBarrieredBase<js::Shape *> = {
+      js::BarrieredBase<js::Shape *> = {
+        value = 0x000000aee62ab088
+      }
+    }
+  }
+   = {
+    kids = (w = 0)
+    listp = 0x0000000000000000
+  }
+}
+(lldb) p (char*) ((JSString*)$2.propid_.value.asBits)->d.inlineStorageLatin1
+(char *) $3 = 0x000000aee6200f68 "y"
+(lldb)
+```
+
+객체의 인라인 캐시에 저장된 변수 y가 `JSString` 형식으로 저장된 것을 확인할 수 있다.
+이어서 변수 x도 따라가보자.
+
+```cpp
+(lldb) p (char*) ((JSString*)$2.parent.value->propid_.value.asBits)->d.inlineStorageLatin1
+(char *) $6 = 0x000000aee6200f48 "x"
+(lldb)
+```
+
+이렇게 객체의 shape에 존재하는 변수명을 확인할 수 있다.
+
+## What's 0xe5e5e5e5e5e5e5e5 ???
+
+디버깅을 하다가 알 수 없는 값을 볼 수 있었다.
+
+```cpp
+(lldb) p *(NativeObject*)0x00aee62811c0
+(js::NativeObject) $8 = {
+  js::ShapedObject = {
+    JSObject = {
+      group_ = {
+        js::WriteBarrieredBase<js::ObjectGroup *> = {
+          js::BarrieredBase<js::ObjectGroup *> = {
+            value = 0x000000aee627d2b0
+          }
+        }
+      }
+      shapeOrExpando_ = 0x000000aee62ab8a8
+    }
+  }
+  slots_ = 0x00007ffff54db8c0
+  elements_ = 0x000055555656c708
+}
+(lldb) x/4gx 0x00007ffff54db8c0
+0x7ffff54db8c0: 0xfff8800000000043 0xe5e5e5e5e5e5e5e5
+0x7ffff54db8d0: 0xe5e5e5e5e5e5e5e5 0xe5e5e5e5e5e5e5e5
+(lldb)
+```
+
+`0x7ffff54db8c0` 위치의 0x43은 내가 넣은 값인데, 그 뒤에 존재하는 알 수 없는 `0xe5e5e5e5e5e5e5e5` 값들이 반복되고 있어서 구글링을 해봤다.
+
+![1](https://i.imgur.com/V94KCvb.jpg)
+
+bugzilla 사이트에선 별 정보를 얻지 못했는데, 첫번째 링크에서 정보를 얻었다.
+
+```
+03:40 pbone: Good afternoon.
+04:31 pbone: 0xe5e5e5e5e5e5e5e5
+04:31 pbone: I know there's a bot here I can ask about that.
+04:31 pbone: mrgiggles: can you help me?
+07:08 evilpie: firebot: literal 0xe5
+07:08 mrgiggles: evilpie: 0xe5 is jemalloc freed memory
+07:08 mrgiggles: evilpie: if you're seeing a crash with this pattern, you have a use-after-free on your hands
+07:08 mrgiggles: evilpie: and you'd better fix it. They tend to be security bugs!
+```
+
+`jemalloc`에서 할당 해제된 청크 내의 값은 0xe5 패턴으로 채워지는 것 같다.
 
 # Troubleshooting
 
