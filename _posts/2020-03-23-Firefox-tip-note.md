@@ -335,7 +335,7 @@ Process 5798 stopped
 
 ![1](https://i.imgur.com/V94KCvb.jpg)
 
-bugzilla 사이트에선 별 정보를 얻지 못했는데, 첫번째 링크에서 정보를 얻었다.
+bugzilla 사이트에선 별 정보를 얻지 못했는데, [첫번째 링크](https://mozilla.logbot.info/jsapi/20171016)에서 정보를 얻었다.
 
 ```
 03:40 pbone: Good afternoon.
