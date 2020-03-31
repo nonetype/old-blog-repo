@@ -21,6 +21,11 @@ Tip note for Firefox analysis & exploitation
     - [Understand Type Masking](#understand-type-masking)
   - [Shape Debugging](#shape-debugging)
   - [What's 0xe5e5e5e5e5e5e5e5 ???](#whats-0xe5e5e5e5e5e5e5e5)
+  - [Object storages](#object-storages)
+    - [Inline properties](#inline-properties)
+    - [Out-of-line properties](#out-of-line-properties)
+    - [Elements](#elements)
+    - [Summary](#summary)
 - [Troubleshooting](#troubleshooting)
   - [TypeError: cannot create 'NoneType' instances while js/src/configure](#typeerror-cannot-create-nonetype-instances-while-jssrcconfigure)
     - [Solution](#solution)
@@ -349,6 +354,155 @@ bugzilla 사이트에선 별 정보를 얻지 못했는데, [첫번째 링크](h
 ```
 
 `jemalloc`에서 할당 해제된 청크 내의 값은 0xe5 패턴으로 채워지는 것 같다.
+
+## Object storages
+
+object에는 크게 3가지의 저장소가 존재하는 듯 하다.
+
+1. Inline storage(Inline properties)
+2. Out-of-line storage(Out-of-line properties)
+3. Elements
+
+**object.js**
+```js
+var o = {
+        x: 0x41, // 1. Inline properties
+        y: 0x42
+};
+Math.atan(o);
+
+o.z = 0x43; // 2. Out-of-line properties
+Math.atan(o);
+
+o[0] = 0x1337; // 3. Elements
+o[1] = 0x1338;
+Math.atan(o);
+
+o.a = 0x44;
+Math.atan(o);
+```
+
+디버깅을 통해 각각의 값들이 어디에 저장되는지 살펴보자.
+
+### Inline properties
+```cpp
+nonetype@box:~/hack/browser/firefox/CVE-2019-9791/gecko-release/dist/bin$ lldb js
+(lldb) target create "js"
+Current executable set to 'js' (x86_64).
+(lldb) b js::math_atan
+Breakpoint 1: where = js`js::math_atan(JSContext*, unsigned int, JS::Value*) + 9 [inlined] bool math_function<&(js::math_atan_impl(double))>(JSContext*, unsigned int, JS::Value*) at jsmath.cpp:149, address = 0x0000000000bebae9
+(lldb) r object.js
+Process 7025 launched: '/home/nonetype/hack/browser/firefox/CVE-2019-9791/gecko-release/dist/bin/js' (x86_64)
+Process 7025 stopped
+* thread #1, name = 'js', stop reason = breakpoint 1.1
+    frame #0: 0x000055555613fae9 js`js::math_atan(JSContext*, unsigned int, JS::Value*) [inlined] bool math_function<&(js::math_atan_impl(double))>(cx=0x00007ffff5b16000, argc=1, vp=0x00007ffff56f60a0) at jsmath.cpp:90
+   87   template <UnaryMathFunctionType F>
+   88   static bool math_function(JSContext* cx, unsigned argc, Value* vp) {
+   89     CallArgs args = CallArgsFromVp(argc, vp);
+-> 90     if (args.length() == 0) {
+   91       args.rval().setNaN();
+   92       return true;
+   93     }
+(lldb) x/3gx vp
+0x7ffff56f60a0: 0xfffe3d5accfaa4c0 0xfffe3d5accf83180
+0x7ffff56f60b0: 0xfffe3d5accf811c0
+(lldb) p *(NativeObject*)0x3d5accf811c0
+(js::NativeObject) $1 = {
+  js::ShapedObject = {
+    JSObject = {
+      group_ = {
+        js::WriteBarrieredBase<js::ObjectGroup *> = {
+          js::BarrieredBase<js::ObjectGroup *> = {
+            value = 0x00003d5accf7d2b0
+          }
+        }
+      }
+      shapeOrExpando_ = 0x00003d5accfab0b0
+    }
+  }
+  slots_ = 0x0000000000000000
+  elements_ = 0x000055555656c708
+}
+(lldb) x/8gx 0x3d5accf811c0
+0x3d5accf811c0: 0x00003d5accf7d2b0 0x00003d5accfab0b0
+0x3d5accf811d0: 0x0000000000000000 0x000055555656c708
+0x3d5accf811e0: 0xfff8800000000041 0xfff8800000000042 // Inline properties HERE!
+0x3d5accf811f0: 0x0000000000000000 0x0000000000000000
+(lldb)
+```
+객체 생성과 동시에 선언되기 때문에 객체의 Shape 포인터 밑에 값이 존재한다.
+
+### Out-of-line properties
+```cpp
+(lldb) c
+Process 7025 resuming
+Process 7025 stopped
+* thread #1, name = 'js', stop reason = breakpoint 1.1
+    frame #0: 0x000055555613fae9 js`js::math_atan(JSContext*, unsigned int, JS::Value*) [inlined] bool math_function<&(js::math_atan_impl(double))>(cx=0x00007ffff5b16000, argc=1, vp=0x00007ffff56f60a0) at jsmath.cpp:90
+   87   template <UnaryMathFunctionType F>
+   88   static bool math_function(JSContext* cx, unsigned argc, Value* vp) {
+   89     CallArgs args = CallArgsFromVp(argc, vp);
+-> 90     if (args.length() == 0) {
+   91       args.rval().setNaN();
+   92       return true;
+   93     }
+(lldb) p *$1.slots_
+(js::HeapSlot) $2 = {
+  js::WriteBarrieredBase<JS::Value> = {
+    js::BarrieredBase<JS::Value> = {
+      value = {
+        asBits_ = 18444633011384221763
+        asDouble_ = NaN
+        debugView_ = (payload47_ = 67, tag_ = JSVAL_TAG_INT32)
+        s_ = {
+          payload_ = (i32_ = 67, u32_ = 67, why_ = 67)
+        }
+      }
+    }
+  }
+}
+(lldb) p $1.slots_
+(js::HeapSlot *) $3 = 0x00007ffff54db8c0
+(lldb) x/8gx 0x00007ffff54db8c0
+0x7ffff54db8c0: 0xfff8800000000043 0xe5e5e5e5e5e5e5e5 // Out-of-line properties HERE!
+0x7ffff54db8d0: 0xe5e5e5e5e5e5e5e5 0xe5e5e5e5e5e5e5e5
+0x7ffff54db8e0: 0xe5e5e5e5e5e5e5e5 0xe5e5e5e5e5e5e5e5
+0x7ffff54db8f0: 0xe5e5e5e5e5e5e5e5 0xe5e5e5e5e5e5e5e5
+(lldb)
+```
+
+### Elements
+```cpp
+(lldb) c
+Process 7025 resuming
+Process 7025 stopped
+* thread #1, name = 'js', stop reason = breakpoint 1.1
+    frame #0: 0x000055555613fae9 js`js::math_atan(JSContext*, unsigned int, JS::Value*) [inlined] bool math_function<&(js::math_atan_impl(double))>(cx=0x00007ffff5b16000, argc=1, vp=0x00007ffff56f60a0) at jsmath.cpp:90
+   87   template <UnaryMathFunctionType F>
+   88   static bool math_function(JSContext* cx, unsigned argc, Value* vp) {
+   89     CallArgs args = CallArgsFromVp(argc, vp);
+-> 90     if (args.length() == 0) {
+   91       args.rval().setNaN();
+   92       return true;
+   93     }
+(lldb) p $1.elements_
+(js::HeapSlot *) $4 = 0x00007ffff54db910
+(lldb) x/8gx 0x00007ffff54db910
+0x7ffff54db910: 0xfff8800000001337 0xfff8800000001338 // Elements HERE!
+0x7ffff54db920: 0x0000000000000000 0x0000000000000000
+0x7ffff54db930: 0x0000000000000000 0x0000000000000000
+0x7ffff54db940: 0x0000000000000000 0x0000000000000000
+(lldb)
+```
+
+### Summary
+```cpp
+(lldb) x/8gx 0x3d5accf811c0 // It's object's address
+0x3d5accf811c0: 0x00003d5accf7d2b0(Group) 0x00003d5accfab8a8(Shape)
+0x3d5accf811d0: 0x00007ffff54db8c0(Out-of-line props) 0x00007ffff54db910(Elements)
+0x3d5accf811e0: 0xfff8800000000041 0xfff8800000000042(Inline props)
+0x3d5accf811f0: 0x0000000000000000 0x0000000000000000
+```
 
 # Troubleshooting
 
@@ -1677,5 +1831,6 @@ apt-get install libgtk2.0-dev
 | Javascript Engine(Spider Monkey) Array OOB Analyzing | [link](https://bpsecblog.wordpress.com/2017/04/27/javascript_engine_array_oob) | `pwn`, `JIT`, `ctf`, `OOB` |
 | Attacking Client-Side JIT Compilers (v2) | [link](https://saelo.github.io/presentations/blackhat_us_18_attacking_client_side_jit_compilers.pdf) | `rev`, `pwn`, `JIT`, `pdf`, `depth` |
 | Introduction to SpiderMonkey exploitation | [link](https://doar-e.github.io/blog/2018/11/19/introduction-to-spidermonkey-exploitation/) | `rev`, `pwn`, `basic`, `JIT`, `ctf`, `OOB` |
+| GDB to LLDB command map | [link](https://lldb.llvm.org/use/map.html) | `tool`, `rev` |
 
 [^type_masking]: 자세한 코드는 `js/public/Value.h`에서 확인 가능하다. (`constexpr uint64_t ValueGCThingPayloadMask = 0x0000'7FFF'FFFF'FFFF;`)
