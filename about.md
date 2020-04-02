@@ -8,11 +8,11 @@ order: 99999
 
 # WonYoung Jung
 ## Introduce
-Pwner in south korea, known as 'NoneType'
+Pwner in south korea, known as 'nonetype'
 
-Interested in 0-Day Finding / 1-Day Analysis (Linkern, Browsers, etc..)
+Interested in 0-day finding / 1-day analysis (Linkern, Browsers, etc..)
 
-also trying to solve CTF-Problems
+also trying to solve CTF-problems
 
 ## Career
 ### 2020
@@ -20,14 +20,14 @@ also trying to solve CTF-Problems
 - Seminar at 'Affiliated Research Institute of ETRI', 'Kernel Exploit with Filesystem Fuzzer'
 
 ### 2019
-- Best of the Best (A.K.A BoB) 8th Vulnerability Analysis Track Mentee
-- Member of [BoBFuzzer](https://github.com/bobfuzzer/)(BoB Project Team)
+- Best of the Best (A.K.A BoB) 8th Vulnerability Analysis Track
+- Member of [BoBFuzzer](https://github.com/bobfuzzer/)(BoB project team)
 - Member of [Defenit](https://defenit.kr/)(CTF Team), as Pwner
 
 ### 2018
 - Belluminar 2018(in POC Conference) - as TeamH4C member
 - GeekPwn 2018 - Router Exploit(DLink, Netgear, Tenda)
-- OpenSecureLab 2nd seminar speaker - 'Finding Software bugs with Fuzzing'
+- OpenSecureLab 2nd seminar speaker - 'Finding software bugs with Fuzzing'
 
 ## Projects
 ### 2019
