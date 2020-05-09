@@ -25,7 +25,6 @@ also trying to solve CTF-problems
 - Member of [Defenit](https://defenit.kr/)(CTF Team), as Pwner
 
 ### 2018
-- Belluminar 2018(in POC Conference) - as TeamH4C member
 - GeekPwn 2018 - Router Exploit(DLink, Netgear, Tenda)
 - OpenSecureLab 2nd seminar speaker - 'Finding software bugs with Fuzzing'
 
