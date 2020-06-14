@@ -18,6 +18,7 @@ also trying to solve CTF-problems
 ### 2020
 - Best of the Best 8th TOP40
 - Seminar at 'Affiliated Research Institute of ETRI', 'Kernel Exploit with Filesystem Fuzzer'
+- Security researcher [@Diffense](https://blog.diffense.co.kr/)
 
 ### 2019
 - Best of the Best (A.K.A BoB) 8th Vulnerability Analysis Track
