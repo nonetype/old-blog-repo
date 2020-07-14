@@ -23,7 +23,6 @@ also trying to solve CTF-problems
 ### 2019
 - Best of the Best (A.K.A BoB) 8th Vulnerability Analysis Track
 - Member of [BoBFuzzer](https://github.com/bobfuzzer/)(BoB project team)
-- Member of [Defenit](https://defenit.kr/)(CTF Team), as Pwner
 
 ### 2018
 - GeekPwn 2018 - Router Exploit(DLink, Netgear, Tenda)
