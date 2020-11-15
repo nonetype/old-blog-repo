@@ -19,7 +19,8 @@ also trying to solve CTF-problems
 - Best of the Best 8th TOP40
 - Seminar at 'Affiliated Research Institute of ETRI', 'Kernel Exploit with Filesystem Fuzzer'
 - Security researcher [@Diffense](https://blog.diffense.co.kr/)
-- CodeBlue 2020 speaker (Hunting kernel exploits with filesystem fuzzer, BoB project)
+- CodeBlue 2020 speaker
+- HITB+ CyberWeek 2020 speaker
 
 ### 2019
 - Best of the Best (A.K.A BoB) 8th Vulnerability Analysis Track
