@@ -7,7 +7,6 @@ order: 99999
 ---
 
 # WonYoung Jung
-## Introduce
 Pwner in south korea, known as 'nonetype'
 
 Interested in 0-day finding / 1-day analysis (Linkern, Browsers, etc..)
@@ -33,8 +32,6 @@ also trying to solve CTF-problems
 ## Projects
 ### 2019
 - 'Kernel Exploit with Filesystem Fuzzer', as BoB project
-  - Seminar at 'Affiliated Research Institute of ETRI'
-  - HITBSECCONF AMSTERDAM 2020 - CFP Accepted
 
 
 ## Contact
