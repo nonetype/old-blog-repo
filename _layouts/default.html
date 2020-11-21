@@ -1,34 +1,63 @@
 ---
-layout: base
+layout: compress
+# Default layout
+# v2.0
+# https://github.com/cotes2020/jekyll-theme-chirpy
+# © 2017-2019 Cotes Chung
+# MIT Licensed
 ---
 
-<div class="page">
-  <h1 class="page-title">{{ page.title | default:"Home"}}</h1>
-  {% capture text %}
-Looks like you are using the `{{ page.layout }}` layout. This layout is not supported by Hydejack. Instead use `blog` or `list`. For more information see the [Hydejack Documentation](https://qwtel.com/hydejack/docs/latest/).
-  {% endcapture %}
-  {% include message.html text=text %}
-  <hr/>
+<!DOCTYPE html>
 
-  {{ content }}
+{% if site.lang %}
+  {% assign lang = site.lang | split: "_" | first %}
+{% else %}
+  {% assign lang = 'en' %}
+{% endif %}
 
-  <h2>Posts</h2>
-  <ul class="related-posts">
-    {% for post in site.posts %}
-      {% include post-list-item.html post=post %}
-    {% endfor %}
-  </ul>
+{% capture prefer_mode %}
+  {% if site.theme_mode != "dual" %}
+    mode="{{ site.theme_mode }}"
+  {% endif %}
+{% endcapture %}
 
-  <h2>Pages</h2>
-  <ul class="related-posts">
-    {% for page in site.html_pages %}
-      {% if page.layout == 'page' %}
-        <li class="h4">
-          <a href="{{ page.url | relative_url }}" data-flip="title">
-            <span>{{ page.title }}</span>
-          </a>
-        </li>
-      {% endif %}
-    {% endfor %}
-  </ul>
-</div>
+<html lang="{{ lang }}" {{ prefer_mode }} >
+
+  {% include head.html %}
+
+  <body data-spy="scroll" data-target="#toc">
+
+    <div id="sidebar" class="d-flex flex-column">
+      {% include sidebar.html %}
+    </div>
+
+    {% include topbar.html %}
+
+    <div id="main-wrapper">
+      <div id="main">
+
+        {% include refactor-content.html content=content %}
+
+        {% include footer.html %}
+
+      </div>
+
+      {% include search-results.html %}
+
+    </div> <!-- #main-wrapper -->
+
+    <div id="mask"></div>
+
+    <a id="back-to-top" href="#" aria-label="back-to-top" class="btn btn-lg btn-box-shadow" role="button">
+      <i class="fas fa-angle-up"></i>
+    </a>
+
+    {% include search-loader.html %}
+
+    {% if site.google_analytics.id and jekyll.environment == 'production' %}
+      {% include google-analytics.html %}
+    {% endif %}
+
+  </body>
+
+</html>

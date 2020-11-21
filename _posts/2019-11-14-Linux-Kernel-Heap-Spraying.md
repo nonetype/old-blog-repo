@@ -3,7 +3,7 @@ layout: post
 title: "Linux kernel Heap Spraying Techniques"
 author: "nonetype"
 categories: pwn
-tags: linux_kernel
+tags: "linux kernel exploit"
 ---
 
 some Techniques to Spraying Linux kernel heap
@@ -14,25 +14,25 @@ some Techniques to Spraying Linux kernel heap
 <!-- @import "[TOC]" {cmd="toc" depthFrom=1 depthTo=6 orderedList=true} -->
 <!-- code_chunk_output -->
 
-1. [목차](#목차)
-2. [Heap Spraying](#heap-spraying)
-3. [add_key()](#add_key)
-    1. [Spraying Example](#spraying-example)
-    2. [Overview](#overview)
-    3. [Syscall Analysis](#syscall-analysis)
-4. [send[m]msg()](#sendmmsg)
-    1. [Spraying Example](#spraying-example-1)
-    2. [Overview](#overview-1)
-    3. [Syscall Analysis](#syscall-analysis-1)
-5. [msgsnd()](#msgsnd)
-    1. [Spraying Example](#spraying-example-2)
-    2. [Overview](#overview-2)
-    3. [Syscall Analysis](#syscall-analysis-2)
-        1. [do_msgsnd](#do_msgsnd)
-        2. [load_msg](#load_msg)
-        3. [alloc_msg](#alloc_msg)
-    4. [Allocated Memory](#allocated-memory)
-6. [References](#references)
+- [목차](#목차)
+- [Heap Spraying](#heap-spraying)
+- [add_key()](#add_key)
+	- [Spraying Example](#spraying-example)
+	- [Overview](#overview)
+	- [Syscall Analysis](#syscall-analysis)
+- [send[m]msg()](#sendmmsg)
+	- [Spraying Example](#spraying-example-1)
+	- [Overview](#overview-1)
+	- [Syscall Analysis](#syscall-analysis-1)
+- [msgsnd()](#msgsnd)
+	- [Spraying Example](#spraying-example-2)
+	- [Overview](#overview-2)
+	- [Syscall Analysis](#syscall-analysis-2)
+		- [do_msgsnd](#do_msgsnd)
+		- [load_msg](#load_msg)
+		- [alloc_msg](#alloc_msg)
+	- [Allocated Memory](#allocated-memory)
+- [References](#references)
 
 <!-- /code_chunk_output -->
 

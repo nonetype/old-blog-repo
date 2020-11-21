@@ -1,8 +1,19 @@
-*.gem
-.bundle
-.sass-cache
+# hidden files
+.*
+!.github
+!.gitignore
+
+# python compiled files
+*.pyc
+
+# jekyll debug
 _site
+
+# Jeykll Gemfile.lock
 Gemfile.lock
-.DS_Store
-TODOLIST.md
-.vscode
+
+# yui-compressor
+*.jar
+
+# bundle cache
+vendor
